@@ -13,5 +13,9 @@ BOT_NAME = 'collect'
 SPIDER_MODULES = ['collect.spiders']
 NEWSPIDER_MODULE = 'collect.spiders'
 
+ITEM_PIPELINES = {
+    'collect.pipelines.JsonWriterPipeline': 100,
+}
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'collect (+http://www.yourdomain.com)'
