@@ -5,7 +5,7 @@ from collect.items import Thesis
 
 class TheseusSpider(scrapy.Spider):
     name = "theseus"
-    allowed_domains = ["http://publications.theseus.fi"]
+    allowed_domains = ["publications.theseus.fi"]
     start_urls = ["http://publications.theseus.fi/oai/request?verb=ListRecords&metadataPrefix=kk"]
 
     def parse(self, response):
@@ -26,3 +26,7 @@ class TheseusSpider(scrapy.Spider):
             thesis['title'] = record.xpath('.//metadata/field[contains(@element, "title")]/@value').extract()
             thesis['document'] = record.xpath('.//metadata/file/@href').extract()
             yield thesis
+
+        # Crawl next page
+        resumptionToken = response.xpath('//OAI-PMH/ListRecords/resumptionToken/text()').extract()[0]
+        yield scrapy.Request("http://publications.theseus.fi/oai/request?verb=ListRecords&resumptionToken=" + resumptionToken, callback=self.parse)
