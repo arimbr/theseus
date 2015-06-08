@@ -7,7 +7,7 @@
 import json
 
 
-IFILE = "theses.jl"
+IFILE = "output.jl"
 
 
 class JsonWriterPipeline(object):
