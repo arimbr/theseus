@@ -31,7 +31,7 @@ class TheseusSpider(scrapy.Spider):
             thesis['documents_url'] = record.xpath('.//metadata/file/@href').extract()
             yield thesis
 
-        # Crawl next page if resumptionToken is not empty
-        resumptionToken = response.xpath('//OAI-PMH/ListRecords/resumptionToken/text()').extract()[0]
-        if resumptionToken:
-            yield scrapy.Request("http://publications.theseus.fi/oai/request?verb=ListRecords&resumptionToken=" + resumptionToken, callback=self.parse)
+        # Crawl next page if resumptionTokens is not empty
+        resumptionTokens = response.xpath('//OAI-PMH/ListRecords/resumptionToken/text()').extract()
+        if resumptionTokens:
+            yield scrapy.Request("http://publications.theseus.fi/oai/request?verb=ListRecords&resumptionToken=" + resumptionTokens[0], callback=self.parse)
