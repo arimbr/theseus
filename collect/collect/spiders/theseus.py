@@ -27,6 +27,7 @@ class TheseusSpider(scrapy.Spider):
             thesis['abstract_sv'] = record.xpath('.//metadata/field[contains(@qualifier, "abstract")][contains(@language, "sv")]/@value').extract()
             thesis['language'] = record.xpath('.//metadata/field[contains(@element, "language")]/@value').extract()
             thesis['subjects'] = record.xpath('.//metadata/field[contains(@element, "subject")]/@value').extract()
+            thesis['keywords'] = record.xpath('.//metadata/field[contains(@element, "keyword")]/@value').extract()
             thesis['titles'] = record.xpath('.//metadata/field[contains(@element, "title")]/@value').extract()
             thesis['documents_url'] = record.xpath('.//metadata/file/@href').extract()
             yield thesis

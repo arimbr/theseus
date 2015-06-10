@@ -22,5 +22,6 @@ class Thesis(scrapy.Item):
     abstract_sv = scrapy.Field()
     language = scrapy.Field()
     subjects = scrapy.Field()
+    keywords = scrapy.Field()
     titles = scrapy.Field()
     documents_url = scrapy.Field()
