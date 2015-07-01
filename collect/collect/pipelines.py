@@ -7,16 +7,16 @@
 import json
 
 
-IFILE = "output.jl"
+OUT = "output.jl"
 
 
 class JsonWriterPipeline(object):
 
     def __init__(self):
-        self.ifile = open(IFILE, 'w')
+        self.out = open(OUT, 'w')
 
     def process_item(self, item, spider):
         item = dict(item)
-        iline = json.dumps(item) + "\n"
-        self.ifile.write(iline)
+        line = json.dumps(item) + "\n"
+        self.out.write(line)
         return item
