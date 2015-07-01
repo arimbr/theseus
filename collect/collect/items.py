@@ -21,7 +21,8 @@ class Thesis(scrapy.Item):
     abstract_en = scrapy.Field()
     abstract_sv = scrapy.Field()
     language = scrapy.Field()
-    subjects = scrapy.Field()
-    keywords = scrapy.Field()
+    subjects = scrapy.Field()  # by the librarian
+    keywords = scrapy.Field()  # by the author
     titles = scrapy.Field()
     documents_url = scrapy.Field()
+    year = scrapy.Field()  # academic year when thesis was issued

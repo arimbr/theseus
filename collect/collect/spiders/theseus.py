@@ -30,6 +30,7 @@ class TheseusSpider(scrapy.Spider):
             thesis['keywords'] = record.xpath('.//metadata/field[contains(@element, "keyword")]/@value').extract()
             thesis['titles'] = record.xpath('.//metadata/field[contains(@element, "title")]/@value').extract()
             thesis['documents_url'] = record.xpath('.//metadata/file/@href').extract()
+            thesis['year'] = record.xpath('.//metadata/field[contains(@element, "date")][contains(@qualifier, "issued")]/@value').extract()
             yield thesis
 
         # Crawl next page if resumptionTokens is not empty
