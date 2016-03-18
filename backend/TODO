@@ -1,0 +1,11 @@
+
+Restful API design
+
+Endpoints:
+/topics
+/topics?collection=collection
+
+/collection
+/collection?topic=topic
+
+groupby=key&filterby=key

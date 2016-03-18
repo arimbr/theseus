@@ -1,0 +1,16 @@
+
+
+.chart div {
+    font: 14px sans-serif;
+    /* background-color: steelblue; */
+    text-align: left;
+    padding: 5px;
+    margin-top: 2px;
+    color: white;
+    cursor: pointer;
+    min-height: 30px;
+}
+
+.selected {
+    background: orange;
+}
