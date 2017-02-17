@@ -52,6 +52,9 @@ angular.module('theseusApp').directive('barChart', [function() {
                             return "<span>" + d._id + "</span><span class='pull-right'>" + d.count + "</span>";
                         });
 
+                    chart
+                        .select("div")
+                        .style("fill", function(d) {console.log(d); return "red"});
                     // remove old bars
                     chart.exit().remove()
             };
