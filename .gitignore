@@ -59,3 +59,12 @@ target/
 
 # IPython
 .ipynb_checkpoints
+
+# Virtualenv
+backend-env
+
+# JavaScript
+bower_components
+
+# Intelliji
+.idea
