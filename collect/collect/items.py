@@ -26,3 +26,8 @@ class Thesis(scrapy.Item):
     titles = scrapy.Field()
     documents_url = scrapy.Field()
     year = scrapy.Field()  # academic year when thesis was issued
+
+
+class Collection(scrapy.Item):
+    id = scrapy.Field()
+    name = scrapy.Field()

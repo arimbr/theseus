@@ -16,7 +16,13 @@ source env/bin/activate
 pip install -r requirements.txt
 
 ```
-Run:
+Run scraper and save output to file:
 ```
-scrapy crawl theseus
+scrapy crawl thesis -o thesis.jl -t jsonlines
+scrapy crawl collection -o collection.jl -t jsonlines
+```
+Load data from file to MongoDB:
+```
+mongoimport -d theseus -c thesis --drop --file  thesis.jl
+mongoimport -d theseus -c collection --drop --file  collection.jl
 ```

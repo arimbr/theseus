@@ -3,8 +3,8 @@ import scrapy
 from collect.items import Thesis
 
 
-class TheseusSpider(scrapy.Spider):
-    name = "theseus"
+class ThesisSpider(scrapy.Spider):
+    name = "thesis"
     allowed_domains = ["publications.theseus.fi"]
     start_urls = ["http://publications.theseus.fi/oai/request?verb=ListRecords&metadataPrefix=kk"]
 
