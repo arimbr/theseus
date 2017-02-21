@@ -18,11 +18,12 @@ pip install -r requirements.txt
 ```
 Run scraper and save output to file:
 ```
-scrapy crawl thesis -o thesis.jl -t jsonlines
-scrapy crawl collection -o collection.jl -t jsonlines
+scrapy crawl collection --logfile="collections.log"
+scrapy crawl thesis --logfile="theses.log"
+
 ```
 Load data from file to MongoDB:
 ```
-mongoimport -d theseus -c thesis --drop --file  thesis.jl
-mongoimport -d theseus -c collection --drop --file  collection.jl
+mongoimport -d theseus -c collections --drop --file  collections.jl
+mongoimport -d theseus -c theses --drop --file  theses.jl
 ```

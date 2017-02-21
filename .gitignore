@@ -68,3 +68,6 @@ bower_components
 
 # Intelliji
 .idea
+
+# Data files
+data/
