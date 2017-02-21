@@ -9,7 +9,7 @@ import scrapy
 
 
 class Thesis(scrapy.Item):
-    identifier = scrapy.Field()
+    _id = scrapy.Field()
     date = scrapy.Field()
     collections = scrapy.Field()
     url = scrapy.Field()
@@ -26,8 +26,12 @@ class Thesis(scrapy.Item):
     titles = scrapy.Field()
     documents_url = scrapy.Field()
     year = scrapy.Field()  # academic year when thesis was issued
+    # Added by loader
+    topics = scrapy.Field()
+    universities = scrapy.Field()
+    degrees = scrapy.Field()
 
 
 class Collection(scrapy.Item):
-    id = scrapy.Field()
+    _id = scrapy.Field()
     name = scrapy.Field()

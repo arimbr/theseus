@@ -14,7 +14,7 @@ class CollectionSpider(scrapy.Spider):
 
         for record in records:
             collection = Collection()
-            collection['id'] = record.xpath('setSpec/text()').extract_first()
+            collection['_id'] = record.xpath('setSpec/text()').extract_first()
             collection['name'] = record.xpath('setName/text()').extract_first()
             yield collection
 

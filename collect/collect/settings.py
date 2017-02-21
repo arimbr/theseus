@@ -15,8 +15,16 @@ NEWSPIDER_MODULE = 'collect.spiders'
 DOWNLOAD_DELAY = 5
 
 ITEM_PIPELINES = {
-    'collect.pipelines.JsonWriterPipeline': 100,
+    'collect.pipelines.MongoDBPipeline': 100,
 }
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'collect (+http://users.metropolia.fi/~ariba)'
+
+# MongoDB settings for pipelines
+MONGODB_HOST = "localhost"
+MONGODB_PORT = 27017
+MONGODB_DB = "theseus"
+MONGODB_THESES_COLLECTION = "theses"
+MONGODB_COLLECTIONS_COLLECTION = "collection"
+

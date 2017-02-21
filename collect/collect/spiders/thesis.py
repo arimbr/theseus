@@ -14,7 +14,7 @@ class ThesisSpider(scrapy.Spider):
 
         for record in records:
             thesis = Thesis()
-            thesis['identifier'] = record.xpath('.//header/identifier/text()').extract()
+            thesis['_id'] = record.xpath('.//header/identifier/text()').extract_first()
             thesis['date'] = record.xpath('.//header/datestamp/text()').extract()
             thesis['collections'] = record.xpath('.//header/setSpec/text()').extract()
             thesis['url'] = record.xpath('.//metadata/link/@href').extract()
