@@ -7,6 +7,7 @@ from bson import json_util
 from bson.objectid import ObjectId
 
 # static_url_path sets the default url for static files to be in a static folder
+# TOOD: refactor access to db
 app = Flask(__name__, static_url_path='')
 client = MongoClient()
 db = client["theseus"]
@@ -62,19 +63,18 @@ def hello():
 
 @app.route("/count")
 def count():
-    return json.dumps(db.thesis.count())
+    return json.dumps(db.theses.count())
 
 @app.route("/thesis/<id>")
 def thesis(id):
-    thesis = db.thesis.find_one({"_id": ObjectId(id)})
+    thesis = db.theses.find_one({"_id": ObjectId(id)})
     return jsonify(thesis)
 
 @app.route("/keywords")
 def keywords():
-    import ipdb; ipdb.set_trace()
     query_string = request.args.get("query")
     query = ast.literal_eval(query_string)
-    cursor = db.thesis.find(query)
+    cursor = db.theses.find(query)
     response = jsonify([document for document in cursor[:5]])
     return response
 
@@ -90,7 +90,7 @@ def counts():
     limit = request.args.get('limit')
     where = ast.literal_eval(request.args.get('where', '{}'))
     pipeline = get_pipeline(where=where, group=group, limit=limit, unwind=True)
-    cursor = db.thesis.aggregate(pipeline=pipeline)
+    cursor = db.theses.aggregate(pipeline=pipeline)
     counts = [d for d in cursor]
     return jsonify(counts)
 
