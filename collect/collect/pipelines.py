@@ -7,7 +7,7 @@
 import pymongo
 from scrapy.conf import settings
 
-from items import Thesis, Collection
+from .items import Thesis, Collection
 
 
 class MongoDBPipeline(object):
