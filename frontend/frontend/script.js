@@ -20,11 +20,18 @@ d3.json("degrees_universities_tsne.json", function(data) {
     // check http://bl.ocks.org/peterssonjonas/4a0e7cb8d23231243e0e
 
     var rMin = d3.min(data, function(d) {return d['size']});
-    var rMax = d3.max(data, function(d) {return d['size']});
+    var rMax = d3.max(data, function(d) {return d['size']})
+
+
+    // Rendering circles with same size while zooming
+    // https://bl.ocks.org/mbostock/2a39a768b1d4bc00a09650edef75ad39
+    var zoom = d3.zoom()
+        .scaleExtent([1, 30])
+        .on('zoom', zoomed);
 
     var rScale = d3.scaleSqrt()
         .domain([rMin, rMax])
-        .range([3, 20]);
+        .range([1, 20]);
 
     var tip = d3.tip()
         .attr('class', 'd3-tip')
@@ -40,15 +47,22 @@ d3.json("degrees_universities_tsne.json", function(data) {
             .attr("width", outerWidth)
             .attr("height", outerHeight)
         .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        .call(zoom);
 
     svg.call(tip);
+
+    // Needed to allow zooming and panning in all area,
+    // otherwsise only possible on circles
+    svg.append("rect")
+        .attr("width", width)
+        .attr("height", height);
 
     var objects = svg.append("svg")
         .attr("width", width)
         .attr("height", height);
 
-    objects.selectAll(".dot")
+    objects.selectAll("circle")
         .data(data)
         .enter().append("circle")
         .attr("r", function(d) {
@@ -62,4 +76,11 @@ d3.json("degrees_universities_tsne.json", function(data) {
         .on("mouseover", tip.show)
         .on("mouseout", tip.hide);
 
+    function zoomed() {
+        console.log("zooming");
+        var transform = d3.event.transform;
+        svg.selectAll("circle").attr("transform", function(d) {
+            return "translate(" + transform.applyX(x(d['x'])) + "," + transform.applyY(y(d['y'])) + ")";
+        });
+    }
 });

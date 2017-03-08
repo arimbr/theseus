@@ -26,3 +26,13 @@
     top: 100%;
     left: 0;
 }
+
+rect {
+    fill: transparent;
+    shape-rendering: crispEdges;
+    cursor: pointer;
+}
+
+circle {
+    cursor: pointer;
+}
