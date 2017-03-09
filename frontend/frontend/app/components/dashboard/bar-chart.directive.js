@@ -1,5 +1,5 @@
-angular.module('app').directive('bubbleChart', [function() {
+angular.module('app').directive('bubbleChart', function() {
     return {
-        
+
     }
-}]);
+});

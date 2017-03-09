@@ -1,6 +1,10 @@
 <div>
     <div layout="row">
-        <div flex="66"><bubble-chart></bubble-chart></div>
-        <div flex="33"><p>Control panel</p></div>
+        <div flex="66">
+            <bubble-chart data="degrees" selected="degree"></bubble-chart>
+        </div>
+        <div flex="33">
+            <bar-chart>Degree: {{ degree.degree }}</bar-chart>
+        </div>
     </div>
 </div>

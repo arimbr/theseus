@@ -1,13 +1,23 @@
-angular.module('app').directive('bubbleChart', [function() {
+angular.module('app').directive('bubbleChart', function() {
     return {
         restrict: 'E',
+        scope: {
+            data: '=data',
+            selected: '=selected'
+        },
         link: function(scope, element, attributes) {
-            var margin = {top: 10, right: 10, bottom: 10, left: 10},
-                height = 800;
 
-            d3.json("app/components/dashboard/data.json", function(data) {
+            function handleClick(d) {
+                console.log("Selected");
+                scope.$apply(function() {
+                    scope.selected = d;
+                });
+            }
 
-                // check http://bl.ocks.org/peterssonjonas/4a0e7cb8d23231243e0e
+            scope.render = function(data) {
+
+                var margin = {top: 10, right: 10, bottom: 10, left: 10},
+                    height = 800;
 
                 var rMin = d3.min(data, function(d) {return d['size']});
                 var rMax = d3.max(data, function(d) {return d['size']})
@@ -36,7 +46,6 @@ angular.module('app').directive('bubbleChart', [function() {
                     .style('width', '100%')
                     .attr("height", height)
                     .append("g")
-                    //.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                     .call(zoom);
 
                 // Dynamically get svg width
@@ -78,7 +87,10 @@ angular.module('app').directive('bubbleChart', [function() {
                     .style("fill", "orange")
                     .attr("opacity", 0.5)
                     .on("mouseover", tip.show)
-                    .on("mouseout", tip.hide);
+                    .on("mouseout", tip.hide)
+                    .on("click", handleClick);
+                // Check http://www.ng-newsletter.com/posts/d3-on-angular.html
+
 
                 function zoomed() {
                     console.log("zooming");
@@ -87,7 +99,15 @@ angular.module('app').directive('bubbleChart', [function() {
                         return "translate(" + transform.applyX(x(d['x'])) + "," + transform.applyY(y(d['y'])) + ")";
                     });
                 }
-            });
+
+            };
+
+            scope.$watch('data', function(newVal, oldVal) {
+                console.log("watch fired");
+                if (newVal != oldVal) {
+                    scope.render(newVal);
+                }
+            }, true);
         }
     }
-}]);
+});
