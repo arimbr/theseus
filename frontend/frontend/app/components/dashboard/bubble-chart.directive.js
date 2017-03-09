@@ -55,12 +55,12 @@ angular.module('app').directive('bubbleChart', function() {
 
 
                 var x = d3.scaleLinear()
-                    .domain([-0.1, 1.1])
+                    .domain([0, 1])
                     .range([margin.left,  width - margin.right])
                     .nice();
 
                 var y = d3.scaleLinear()
-                    .domain([-0.1, 1.1])
+                    .domain([0, 1])
                     .range([margin.top, height - margin.bottom])
                     .nice();
 

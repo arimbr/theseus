@@ -1,10 +1,22 @@
 <div>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Theseus</span>
+            </h2>
+            <span flex> </span>
+            <md-button class="md-icon-button" aria-label="Messages">
+                <i class="material-icons">help</i>
+            </md-button>
+        </div>
+    </md-toolbar>
     <div layout="row">
-        <div flex="66">
+        <md-card flex="66">
             <bubble-chart data="degrees" selected="degree"></bubble-chart>
-        </div>
-        <div flex="33">
-            <bar-chart>Degree: {{ degree.degree }}</bar-chart>
-        </div>
+        </md-card>
+        <md-card flex="33" class="barchart">
+            <p>Degree: {{ degree.degree }}</p>
+            <bar-chart data="topics" selected="topic"></bar-chart>
+        </md-card>
     </div>
 </div>
