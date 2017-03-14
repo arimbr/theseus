@@ -19,8 +19,8 @@ angular.module('app').directive('bubbleChart', function() {
                 var margin = {top: 10, right: 10, bottom: 10, left: 10},
                     height = 800;
 
-                var rMin = d3.min(data, function(d) {return d['size']});
-                var rMax = d3.max(data, function(d) {return d['size']})
+                var rMin = d3.min(data, function(d) {return d['count']});
+                var rMax = d3.max(data, function(d) {return d['count']})
 
                 // Rendering circles with same size while zooming
                 // https://bl.ocks.org/mbostock/2a39a768b1d4bc00a09650edef75ad39
@@ -30,15 +30,15 @@ angular.module('app').directive('bubbleChart', function() {
 
                 var rScale = d3.scaleSqrt()
                     .domain([rMin, rMax])
-                    .range([1, 20]);
+                    .range([2, 20]);
 
                 var tip = d3.tip()
                     .attr('class', 'd3-tip')
                     .offset([-10, 0])
                     .html(function(d) {
-                        return "<strong>University:</strong> <span style='color:orange'>" + d.university + "</span>" + "<\hr>" +
-                            "<strong>Degree:</strong> <span style='color:orange'>" + d.degree + "</span>" + "<\hr>" +
-                            "<strong>Number of theses:</strong> <span style='color:orange'>" + d.size + "</span>";
+                        return "<strong>University:</strong> <span style='color:orange'>" + d.university_name + "</span>" + "<\hr>" +
+                            "<strong>Degree:</strong> <span style='color:orange'>" + d.degree_name + "</span>" + "<\hr>" +
+                            "<strong>Number of theses:</strong> <span style='color:orange'>" + d.count + "</span>";
                     });
 
                 var svg = d3.select(element[0])
@@ -79,7 +79,7 @@ angular.module('app').directive('bubbleChart', function() {
                     .data(data)
                     .enter().append("circle")
                     .attr("r", function(d) {
-                        return rScale(d['size']);
+                        return rScale(d['count']);
                     })
                     .attr("transform", function(d) {
                         return "translate(" + x(d['x']) + "," + y(d['y']) + ")";
@@ -103,7 +103,7 @@ angular.module('app').directive('bubbleChart', function() {
             };
 
             scope.$watch('data', function(newVal, oldVal) {
-                console.log("watch fired");
+                console.log("watch fired in bubble chart");
                 if (newVal != oldVal) {
                     scope.render(newVal);
                 }

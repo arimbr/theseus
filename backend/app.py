@@ -6,9 +6,12 @@ from pymongo import MongoClient
 from bson import json_util
 from bson.objectid import ObjectId
 
+from flask_cors import CORS
+
 # static_url_path sets the default url for static files to be in a static folder
 # TOOD: refactor access to db
 app = Flask(__name__, static_url_path='')
+CORS(app)
 client = MongoClient()
 db = client["theseus"]
 

@@ -10,6 +10,12 @@ angular.module('app').directive('barChart', function() {
             // Render the graph based on data
             scope.render = function(data) {
 
+                // Handle transition
+                d3.selectAll('.bar-chart-container').remove();  // Clean before drawing
+
+                console.log("rendering bar chart");
+                console.log(data);
+
                 // Dynamically get svg width
                 var width = element[0].getBoundingClientRect().width;
                 var margin = {top: 10, right: 10, bottom: 10, left: 10};
@@ -17,15 +23,11 @@ angular.module('app').directive('barChart', function() {
 
                 var svg = d3.select(element[0])
                     .append('div')
-                    .classed('chart', true);
+                    .classed('bar-chart-container', true);
 
                 var x = d3.scaleLinear()
                     .domain([0, maxX])  // input
-                    .range([margin.left,  width - margin.right])
-                    .nice();
-
-                // Handle transition
-                //svg.selectAll("div").remove();  // Clean before drawing
+                    .range([margin.left,  width - margin.right]);
 
                 var chart = svg
                     .selectAll("div")
@@ -50,7 +52,8 @@ angular.module('app').directive('barChart', function() {
 
                     })
                     .html(function (d) {
-                        return "<span>" + d._id + "</span>";
+                        return "<span>" + d._id + "</span>"
+                            + "<span class='bar-count'>" + d.count + "</span>";
                     });
 
                 chart
@@ -62,8 +65,9 @@ angular.module('app').directive('barChart', function() {
 
 
             scope.$watch('data', function(newVal, oldVal) {
-                console.log("watch fired");
+                //debugger;
                 if (newVal != oldVal) {
+                    console.log("watch fired in bar chart");
                     scope.render(newVal);
                 }
             }, true);

@@ -37,7 +37,7 @@ circle {
     cursor: pointer;
 }
 
-.chart div {
+.bar-chart-container div {
     font: 14px sans-serif;
     background-color: rgb(63,81,181);
     text-align: left;
@@ -45,13 +45,16 @@ circle {
     margin-top: 2px;
     color: white;
     cursor: pointer;
-    min-height: 30px;
 }
 
 .selected {
     background: orange;
 }
 
-.barchart {
+.container {
     padding: 10px;
+}
+
+.bar-count {
+    float: right;
 }
