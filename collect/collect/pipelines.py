@@ -4,10 +4,59 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+import re
+import logging
+
 import pymongo
 from scrapy.conf import settings
 
 from .items import Thesis, Collection
+
+
+logger = logging.getLogger(__name__)
+
+
+def get_topics(subjects, keywords):
+    """Joins subjects and keywords and removes duplicates"""
+    topics = set(subjects).union(keywords)
+    return [topic.lower().strip() for topic in topics if topic.strip()]
+
+
+def get_university(collections):
+    """Gets the first university id"""
+    university_ids = [_id for _id in collections if _id.startswith('com')]
+    if len(university_ids) > 0:
+        return {
+            'id': university_ids[0]
+        }
+    return None
+
+
+def get_degree(collections):
+    """Gets the first degree id"""
+    degree_ids = [_id for _id in collections if _id.startswith('col')]
+    if len(degree_ids) > 0:
+        return {
+            'id': degree_ids[0]
+        }
+    return None
+
+
+def get_year(years):
+    """Parses the year"""
+    try:
+        # Take the first 4 digits as the year
+        return int(re.findall(r'\d{4}', years[0])[0])
+    except Exception:
+        logger.exception("Couldn't get year from: " + years)
+        return None
+
+
+def get_language(languages):
+    """Parses the language"""
+    if len(languages) > 0 and languages[0]:
+        return languages[0].lower().strip()
+    return None
 
 
 class MongoDBPipeline(object):
@@ -25,29 +74,11 @@ class MongoDBPipeline(object):
         return item
 
     def transform_thesis(self, item):
-        # Add topics field
-        topics = set(item['subjects']).union(item['keywords'])
-        topics = [topic.lower() for topic in topics if topic]
-        item['topics'] = topics
-
-        # Add universities field
-        university_ids = [
-            _id for _id in item['collections'] if _id.startswith('com')
-        ]
-        universities = self.collections.find(
-            {'_id': {'$in': university_ids}}
-        )
-        item['universities'] = [u['name'] for u in universities]
-
-        # Add degree field
-        degree_ids = [
-            _id for _id in item['collections'] if _id.startswith('col')
-            ]
-        degrees = self.collections.find(
-            {'_id': {'$in': degree_ids}},
-        )
-        item['degrees'] = [d['name'] for d in degrees]
-
+        item['topics'] = get_topics(item['subjects'], item['keywords'])
+        item['university'] = get_university(item['collections'])
+        item['degree'] = get_degree(item['collections'])
+        item['year'] = get_year(item['years'])
+        item['language'] = get_language(item['languages'])
         return item
 
     def load_collection(self, item):
@@ -58,11 +89,14 @@ class MongoDBPipeline(object):
         )
 
     def load_thesis(self, item):
-        result = self.theses.replace_one(
-            {'_id': item['_id']},
-            item,
-            upsert=True
-        )
+        try:
+            result = self.theses.replace_one(
+                {'_id': item['_id']},
+                item,
+                upsert=True
+            )
+        except Exception:
+            logger.exception("Couldn't load item: " + item)
 
     def process_item(self, item, spider):
         if isinstance(item, Thesis):

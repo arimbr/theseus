@@ -8,15 +8,22 @@ from bson.objectid import ObjectId
 
 from flask_cors import CORS
 
+import settings
+
 # static_url_path sets the default url for static files to be in a static folder
 # TOOD: refactor access to db
 app = Flask(__name__, static_url_path='')
 CORS(app)
-client = MongoClient()
-db = client["theseus"]
+
+# MongoDB configuration
+connection = MongoClient(
+    settings.MONGODB_HOST,
+    settings.MONGODB_PORT
+)
+db = connection[settings.MONGODB_DB]
 
 
-def get_pipeline(where=None, group=None, limit=None, unwind=False):
+def build_pipeline(where=None, group=None, limit=None, unwind=False):
     """ Gets a pipeline to filter and aggregate documents
 
     Arguments:
@@ -60,27 +67,6 @@ def jsonify(data):
     return json_util.dumps(data, indent=4, separators=(',', ': '))
 
 
-@app.route("/")
-def hello():
-    return render_template('index.html')
-
-@app.route("/count")
-def count():
-    return json.dumps(db.theses.count())
-
-@app.route("/thesis/<id>")
-def thesis(id):
-    thesis = db.theses.find_one({"_id": ObjectId(id)})
-    return jsonify(thesis)
-
-@app.route("/keywords")
-def keywords():
-    query_string = request.args.get("query")
-    query = ast.literal_eval(query_string)
-    cursor = db.theses.find(query)
-    response = jsonify([document for document in cursor[:5]])
-    return response
-
 # /counts?group=subject&limit=100
 # /counts?group=programme&limit=100
 # /counts?group=subjects&limit=100&where={"language":"en"}
@@ -92,11 +78,14 @@ def counts():
     group = request.args.get('group')
     limit = request.args.get('limit')
     where = ast.literal_eval(request.args.get('where', '{}'))
-    pipeline = get_pipeline(where=where, group=group, limit=limit, unwind=True)
+    pipeline = build_pipeline(where=where, group=group, limit=limit, unwind=True)
+    # TODO: should get theses variable from settings
     cursor = db.theses.aggregate(pipeline=pipeline)
     counts = [d for d in cursor]
     return jsonify(counts)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Running threaded in local because of
+    # https://github.com/pallets/flask/issues/2169
+    app.run(debug=True, threaded=True)

@@ -10,26 +10,28 @@ import scrapy
 
 class Thesis(scrapy.Item):
     _id = scrapy.Field()
-    date = scrapy.Field()
+    dates = scrapy.Field()
     collections = scrapy.Field()
-    url = scrapy.Field()
+    urls = scrapy.Field()
     authors = scrapy.Field()
-    organization = scrapy.Field()
-    programme = scrapy.Field()
-    orientation = scrapy.Field()
-    abstract_fi = scrapy.Field()
-    abstract_en = scrapy.Field()
-    abstract_sv = scrapy.Field()
-    language = scrapy.Field()
-    subjects = scrapy.Field()  # by the librarian
-    keywords = scrapy.Field()  # by the author
+    organizations = scrapy.Field()
+    programmes = scrapy.Field()
+    orientations = scrapy.Field()
+    abstracts_fi = scrapy.Field()
+    abstracts_en = scrapy.Field()
+    abstracts_sv = scrapy.Field()
+    languages = scrapy.Field()
+    subjects = scrapy.Field()  # added by the librarian
+    keywords = scrapy.Field()  # added by the author
     titles = scrapy.Field()
-    documents_url = scrapy.Field()
-    year = scrapy.Field()  # academic year when thesis was issued
-    # Added by loader
+    document_urls = scrapy.Field()
+    years = scrapy.Field()  # academic year when thesis was issued
+    # Cleaned fields added by loader
     topics = scrapy.Field()
-    universities = scrapy.Field()
-    degrees = scrapy.Field()
+    university = scrapy.Field()
+    degree = scrapy.Field()
+    language = scrapy.Field()
+    year = scrapy.Field()
 
 
 class Collection(scrapy.Item):
