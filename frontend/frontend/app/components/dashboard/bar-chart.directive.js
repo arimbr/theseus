@@ -7,6 +7,13 @@ angular.module('app').directive('barChart', function() {
         },
         link: function(scope, element, attributes) {
 
+            function handleClick(d) {
+                console.log("Selected");
+                scope.$apply(function() {
+                    scope.selected = d;
+                });
+            }
+
             // Render the graph based on data
             scope.render = function(data) {
 
@@ -38,11 +45,7 @@ angular.module('app').directive('barChart', function() {
                     .style("width", function (d) {
                         return x(d.count) + 'px';
                     })
-                    .on("click", function (d, i) {
-                        console.log("Clicked " + d._id);
-                        //d3.select(this).style("background", "orange");
-
-                    })
+                    .on("click", handleClick)
                     .on("mouseover", function (d) {
                         d3.select(this).style("background", "orange");
 

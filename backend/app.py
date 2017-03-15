@@ -85,6 +85,40 @@ def counts():
     return jsonify(counts)
 
 
+@app.route("/degrees")
+def degrees():
+    cursor = db.degrees.find()
+    degrees = [d for d in cursor]
+    return jsonify(degrees)
+
+
+@app.route("/degrees/counts")
+def degree_counts():
+    where = ast.literal_eval(request.args.get('where', '{}'))
+    pipeline = []
+    if where:
+        pipeline.append(
+            {'$match': where}
+        )
+    pipeline.append(
+        {'$group': {'_id': '$degree.id', 'count': {'$sum': 1}}}
+    )
+    pipeline.append(
+        {'$lookup': {
+            'from': 'degrees',
+            'localField': '_id',
+            'foreignField': '_id',
+            'as': 'degrees'
+        }}
+    )
+    pipeline.append(
+        {'$match': {'degrees': {'$ne': []}}}
+    )
+    cursor = db.theses.aggregate(pipeline)
+    degrees = [d for d in cursor]
+    return jsonify(degrees)
+
+
 if __name__ == "__main__":
     # Running threaded in local because of
     # https://github.com/pallets/flask/issues/2169

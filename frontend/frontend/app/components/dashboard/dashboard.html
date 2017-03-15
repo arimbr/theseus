@@ -13,18 +13,18 @@
     <div layout="row">
         <md-card flex="66" class="container">
             <h4>DEGREES</h4>
-            <bubble-chart data="degrees" selected="degree"></bubble-chart>
+            <bubble-chart data="degree_counts" selected="degree"></bubble-chart>
         </md-card>
         <div flex="33">
-            <md-card class="container">
-                <h4>SELECTION</h4>
-                <div>University: {{ degree.university_name }}</div>
-                <div>Degree: {{ degree.degree_name }}</div>
-                <div>Number of theses: {{ degree.count }}</div>
-            </md-card>
+            <!--<md-card class="container">-->
+                <!--<h4>SELECTION</h4>-->
+                <!--<div>University: {{ degree.degrees[0].university.name }}</div>-->
+                <!--<div>Degree: {{ degree.degrees[0].name }}</div>-->
+                <!--<div>Number of theses: {{ degree.count }}</div>-->
+            <!--</md-card>-->
             <md-card class="container">
                 <h4>TOPICS</h4>
-                <bar-chart data="topics" selected="topic"></bar-chart>
+                <bar-chart data="topic_counts" selected="topic"></bar-chart>
             </md-card>
         </div>
     </div>

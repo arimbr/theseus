@@ -16,6 +16,8 @@ angular.module('app').directive('bubbleChart', function() {
 
             scope.render = function(data) {
 
+                d3.selectAll('.bubble-chart-container').remove();  // Clean before drawing
+
                 var margin = {top: 10, right: 10, bottom: 10, left: 10},
                     height = 800;
 
@@ -36,13 +38,14 @@ angular.module('app').directive('bubbleChart', function() {
                     .attr('class', 'd3-tip')
                     .offset([-10, 0])
                     .html(function(d) {
-                        return "<strong>University:</strong> <span style='color:orange'>" + d.university_name + "</span>" + "<\hr>" +
-                            "<strong>Degree:</strong> <span style='color:orange'>" + d.degree_name + "</span>" + "<\hr>" +
+                        return "<strong>University:</strong> <span style='color:orange'>" + d.degrees[0].university.name + "</span>" + "<\hr>" +
+                            "<strong>Degree:</strong> <span style='color:orange'>" + d.degrees[0].name + "</span>" + "<\hr>" +
                             "<strong>Number of theses:</strong> <span style='color:orange'>" + d.count + "</span>";
                     });
 
                 var svg = d3.select(element[0])
                     .append('svg')
+                    .classed('bubble-chart-container', true)
                     .style('width', '100%')
                     .attr("height", height)
                     .append("g")
@@ -82,7 +85,7 @@ angular.module('app').directive('bubbleChart', function() {
                         return rScale(d['count']);
                     })
                     .attr("transform", function(d) {
-                        return "translate(" + x(d['x']) + "," + y(d['y']) + ")";
+                        return "translate(" + x(d.degrees[0].x) + "," + y(d.degrees[0].y) + ")";
                     })
                     .style("fill", "orange")
                     .attr("opacity", 0.5)
@@ -96,7 +99,7 @@ angular.module('app').directive('bubbleChart', function() {
                     console.log("zooming");
                     var transform = d3.event.transform;
                     svg.selectAll("circle").attr("transform", function(d) {
-                        return "translate(" + transform.applyX(x(d['x'])) + "," + transform.applyY(y(d['y'])) + ")";
+                        return "translate(" + transform.applyX(x(d.degrees[0].x)) + "," + transform.applyY(y(d.degrees[0].y)) + ")";
                     });
                 }
 
