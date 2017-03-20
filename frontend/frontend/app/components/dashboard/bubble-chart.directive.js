@@ -7,8 +7,33 @@ angular.module('app').directive('bubbleChart', function() {
         },
         link: function(scope, element, attributes) {
 
+            var tip = d3.tip()
+                .attr('class', 'd3-tip')
+                .offset([-10, 0])
+                .html(function(d) {
+                    return "<strong>University:</strong> <span style='color:orange'>" + d.degrees[0].university.name + "</span>" + "<\hr>" +
+                        "<strong>Degree:</strong> <span style='color:orange'>" + d.degrees[0].name + "</span>" + "<\hr>" +
+                        "<strong>Number of theses:</strong> <span style='color:orange'>" + d.count + "</span>";
+                });
+
+            function toggleSelectedCircle(self) {
+                d3.select(".selected-circle")
+                    .classed("selected-circle", false);
+                d3.select(self).transition()
+                    .attr("class", "selected-circle");
+            }
+
+            function handleMouseover(d) {
+                tip.show(d);
+            }
+
+            function handleMouseout(d) {
+                tip.hide(d);
+            }
+
             function handleClick(d) {
-                console.log("Selected");
+                console.log("Clicked on circle");
+                toggleSelectedCircle(this);
                 scope.$apply(function() {
                     scope.selected = d;
                 });
@@ -27,21 +52,12 @@ angular.module('app').directive('bubbleChart', function() {
                 // Rendering circles with same size while zooming
                 // https://bl.ocks.org/mbostock/2a39a768b1d4bc00a09650edef75ad39
                 var zoom = d3.zoom()
-                    .scaleExtent([1, 30])
-                    .on('zoom', zoomed);
+                    .scaleExtent([1, 50])
+                    .on('zoom', handleZoom);
 
                 var rScale = d3.scaleSqrt()
                     .domain([rMin, rMax])
                     .range([2, 20]);
-
-                var tip = d3.tip()
-                    .attr('class', 'd3-tip')
-                    .offset([-10, 0])
-                    .html(function(d) {
-                        return "<strong>University:</strong> <span style='color:orange'>" + d.degrees[0].university.name + "</span>" + "<\hr>" +
-                            "<strong>Degree:</strong> <span style='color:orange'>" + d.degrees[0].name + "</span>" + "<\hr>" +
-                            "<strong>Number of theses:</strong> <span style='color:orange'>" + d.count + "</span>";
-                    });
 
                 var svg = d3.select(element[0])
                     .append('svg')
@@ -89,13 +105,13 @@ angular.module('app').directive('bubbleChart', function() {
                     })
                     .style("fill", "orange")
                     .attr("opacity", 0.5)
-                    .on("mouseover", tip.show)
-                    .on("mouseout", tip.hide)
+                    .on("mouseover", handleMouseover)
+                    .on("mouseout", handleMouseout)
                     .on("click", handleClick);
                 // Check http://www.ng-newsletter.com/posts/d3-on-angular.html
 
 
-                function zoomed() {
+                function handleZoom() {
                     console.log("zooming");
                     var transform = d3.event.transform;
                     svg.selectAll("circle").attr("transform", function(d) {

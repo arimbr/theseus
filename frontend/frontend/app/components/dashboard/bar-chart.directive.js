@@ -8,10 +8,18 @@ angular.module('app').directive('barChart', function() {
         link: function(scope, element, attributes) {
 
             function handleClick(d) {
-                console.log("Selected");
+                console.log("Selected bar");
+                toggleSelectedBar(this);
                 scope.$apply(function() {
                     scope.selected = d;
                 });
+            }
+
+            function toggleSelectedBar(self) {
+                d3.select(".selected-bar")
+                    .classed("selected-bar", false);
+                d3.select(self).transition()
+                    .attr("class", "selected-bar");
             }
 
             // Render the graph based on data

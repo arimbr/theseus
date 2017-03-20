@@ -47,8 +47,12 @@ circle {
     cursor: pointer;
 }
 
-.selected {
-    background: orange;
+.selected-bar {
+    background: orange !important;
+}
+
+.selected-circle {
+    fill: rgb(63,81,181) !important;
 }
 
 .container {
