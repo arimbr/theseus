@@ -29,7 +29,7 @@ angular.module('app').controller('DashboardCtrl', [
             console.log(data);
         });
 
-        Count.query({'group': 'topics', 'limit': 28}, function(data) {
+        Count.query({'group': 'topics', 'limit': 15}, function(data) {
             $scope.topic_counts = data;
             console.log(data);
             //$scope.$apply();
@@ -42,7 +42,7 @@ angular.module('app').controller('DashboardCtrl', [
 
                 Count.query({
                     'group': 'topics',
-                    'limit': 28,
+                    'limit': 15,
                     'where': {'degree.id': newVal._id}
                 }, function(data) {
                     $scope.topic_counts = data;

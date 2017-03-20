@@ -24,10 +24,12 @@ angular.module('app').directive('bubbleChart', function() {
             }
 
             function handleMouseover(d) {
+                d3.select(this).style("stroke", "rgb(63,81,181)");
                 tip.show(d);
             }
 
             function handleMouseout(d) {
+                d3.select(this).style("stroke", "orange");
                 tip.hide(d);
             }
 
@@ -103,8 +105,6 @@ angular.module('app').directive('bubbleChart', function() {
                     .attr("transform", function(d) {
                         return "translate(" + x(d.degrees[0].x) + "," + y(d.degrees[0].y) + ")";
                     })
-                    .style("fill", "orange")
-                    .attr("opacity", 0.5)
                     .on("mouseover", handleMouseover)
                     .on("mouseout", handleMouseout)
                     .on("click", handleClick);

@@ -27,38 +27,53 @@
     left: 0;
 }
 
+.bar-chart-container div {
+    font: 14px sans-serif;
+    text-align: left;
+    padding: 5px;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.bar {
+    background: rgb(63,81,181);
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(63,81,181);
+    height: 10px;
+}
+
+.selected-bar .bar {
+    border-color: orange !important;
+    background: orange !important;
+}
+
+.bar-number {
+    color: white;
+    font-size: 10px;
+    float: right;
+}
+
 rect {
     fill: transparent;
     shape-rendering: crispEdges;
     cursor: pointer;
 }
 
+
 circle {
     cursor: pointer;
-}
-
-.bar-chart-container div {
-    font: 14px sans-serif;
-    background-color: rgb(63,81,181);
-    text-align: left;
-    padding: 5px;
-    margin-top: 2px;
-    color: white;
-    cursor: pointer;
-}
-
-.selected-bar {
-    background: orange !important;
+    fill: orange;
+    opacity: 0.5;
+    stroke-width: 2px;
+    stroke: orange;
 }
 
 .selected-circle {
     fill: rgb(63,81,181) !important;
+    stroke: rgb(63,81,181) !important;
 }
 
 .container {
     padding: 10px;
-}
-
-.bar-count {
-    float: right;
 }
