@@ -16,11 +16,12 @@ angular.module('app').directive('bubbleChart', function() {
                         "<strong>Number of theses:</strong> <span style='color:orange'>" + d.count + "</span>";
                 });
 
-            function toggleSelectedCircle(self) {
-                d3.select(".selected-circle")
-                    .classed("selected-circle", false);
-                d3.select(self).transition()
-                    .attr("class", "selected-circle");
+            function checkSelected(d) {
+                if(scope.selected.indexOf(d._id) > -1) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
 
             function handleMouseover(d) {
@@ -34,14 +35,29 @@ angular.module('app').directive('bubbleChart', function() {
             }
 
             function handleClick(d) {
-                console.log("Clicked on circle");
-                toggleSelectedCircle(this);
-                scope.$apply(function() {
-                    scope.selected = d;
-                });
+                console.log("Selected circle", d);
+                var index = scope.selected.indexOf(d._id)
+                if( index > -1) {
+                    // Remove element
+                    d3.select(this)
+                        .classed("selected-circle", false);
+                    scope.$apply(function() {
+                        scope.selected.splice(index, 1);
+                    });
+                } else {
+                    // Add new element
+                    d3.select(this).transition()
+                        .attr("class", "selected-circle");
+                    scope.$apply(function() {
+                        scope.selected.push(d._id);
+                    });
+                }
+
             }
 
             scope.render = function(data) {
+
+                console.log("Rendering bubble chart")
 
                 d3.selectAll('.bubble-chart-container').remove();  // Clean before drawing
 
@@ -105,6 +121,7 @@ angular.module('app').directive('bubbleChart', function() {
                     .attr("transform", function(d) {
                         return "translate(" + x(d.degrees[0].x) + "," + y(d.degrees[0].y) + ")";
                     })
+                    .classed("selected-circle", checkSelected)
                     .on("mouseover", handleMouseover)
                     .on("mouseout", handleMouseout)
                     .on("click", handleClick);
@@ -121,12 +138,12 @@ angular.module('app').directive('bubbleChart', function() {
 
             };
 
-            scope.$watch('data', function(newVal, oldVal) {
-                console.log("watch fired in bubble chart");
+            scope.$watchCollection('data', function(newVal, oldVal) {
+                console.log("Watch fired in bubble chart");
                 if (newVal != oldVal) {
                     scope.render(newVal);
                 }
-            }, true);
+            });
         }
     }
 });

@@ -8,12 +8,17 @@
             <md-button class="md-icon-button" aria-label="Messages">
                 <i class="material-icons">help</i>
             </md-button>
+            <md-button class="md-icon-button" aria-label="Reset">
+                <i class="material-icons" ng-click="init()">autorenew</i>
+            </md-button>
         </div>
     </md-toolbar>
     <div layout="row">
         <md-card flex="66" class="container">
-            <h4>DEGREES</h4>
-            <bubble-chart data="degree_counts" selected="degree"></bubble-chart>
+            <md-chips ng-model="topics"
+                      placeholder="Enter a topic"
+                      secondary-placeholder=""></md-chips>
+            <bubble-chart data="degree_counts" selected="degrees"></bubble-chart>
         </md-card>
         <div flex="33">
             <!--<md-card class="container">-->
@@ -23,8 +28,7 @@
                 <!--<div>Number of theses: {{ degree.count }}</div>-->
             <!--</md-card>-->
             <md-card class="container">
-                <h4>TOPICS</h4>
-                <bar-chart data="topic_counts" selected="topic"></bar-chart>
+                <bar-chart data="topic_counts" selected="topics"></bar-chart>
             </md-card>
         </div>
     </div>

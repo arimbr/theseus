@@ -7,12 +7,28 @@ angular.module('app').directive('barChart', function() {
         },
         link: function(scope, element, attributes) {
 
+            function checkSelected(d) {
+                if(scope.selected.indexOf(d._id) > -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
             function handleClick(d) {
-                console.log("Selected bar");
-                toggleSelectedBar(this);
-                scope.$apply(function() {
-                    scope.selected = d;
-                });
+                console.log("Selected bar: ", d);
+                var index = scope.selected.indexOf(d._id)
+                if( index > -1) {
+                    // Remove element
+                    scope.$apply(function() {
+                        scope.selected.splice(index, 1);
+                    });
+                } else {
+                    // Add new element
+                    scope.$apply(function() {
+                        scope.selected.push(d._id);
+                    });
+                }
             }
 
             function toggleSelectedBar(self) {
@@ -25,11 +41,10 @@ angular.module('app').directive('barChart', function() {
             // Render the graph based on data
             scope.render = function(data) {
 
+                console.log("Rendering bar chart");
+
                 // Handle transition
                 d3.selectAll('.bar-chart-container').remove();  // Clean before drawing
-
-                console.log("rendering bar chart");
-                console.log(data);
 
                 // Dynamically get svg width
                 var width = element[0].getBoundingClientRect().width;
@@ -67,23 +82,21 @@ angular.module('app').directive('barChart', function() {
                     .attr("class", "bar")
                     .style("width", function(d) {
                         return x(d.count) + 'px';
-                    }).html(function(d) {
+                    })
+                    .classed("selected-bar", checkSelected)
+                    .html(function(d) {
                         return "<span class='bar-number'>" + d.count + "</span>"
-                    }
-                    );
-
-                // remove old bars
-                //chart.exit().remove()
+                    });
             };
 
 
-            scope.$watch('data', function(newVal, oldVal) {
+            scope.$watchCollection('data', function(newVal, oldVal) {
                 //debugger;
                 if (newVal != oldVal) {
-                    console.log("watch fired in bar chart");
+                    console.log("Watch fired in bar chart");
                     scope.render(newVal);
                 }
-            }, true);
+            });
 
         }
     }

@@ -41,9 +41,10 @@
     border-width: 2px;
     border-color: rgb(63,81,181);
     height: 10px;
+    opacity: 0.7;
 }
 
-.selected-bar .bar {
+.selected-bar {
     border-color: orange !important;
     background: orange !important;
 }
