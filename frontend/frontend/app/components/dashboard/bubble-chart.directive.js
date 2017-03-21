@@ -11,9 +11,11 @@ angular.module('app').directive('bubbleChart', function() {
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
                 .html(function(d) {
-                    return "<strong>University:</strong> <span style='color:orange'>" + d.degrees[0].university.name + "</span>" + "<\hr>" +
-                        "<strong>Degree:</strong> <span style='color:orange'>" + d.degrees[0].name + "</span>" + "<\hr>" +
-                        "<strong>Number of theses:</strong> <span style='color:orange'>" + d.count + "</span>";
+                    return "<div class='bubble-tooltip'>" +
+                        "<span><h3>" + d.degrees[0].name + "</h3></span>" +
+                        "<span>" + d.degrees[0].university.name + "</span>" + "<br><br>" +
+                        "<span>" + d.count + " theses" +"</span>" + "<br>" +
+                        "</div>"
                 });
 
             function checkSelected(d) {
