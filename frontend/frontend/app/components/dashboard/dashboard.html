@@ -1,34 +1,66 @@
 <div>
     <md-toolbar>
         <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Menu">
+                <i class="material-icons">menu</i>
+            </md-button>
             <h2>
-                <span>Theseus</span>
+                <span>Theseus Dashboard</span>
             </h2>
             <span flex> </span>
-            <md-button class="md-icon-button" aria-label="Messages">
+            <md-button class="md-icon-button" aria-label="Help">
                 <i class="material-icons">help</i>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="Reset">
-                <i class="material-icons" ng-click="init()">autorenew</i>
             </md-button>
         </div>
     </md-toolbar>
     <div layout="row">
-        <md-card flex="66" class="container">
-            <md-chips ng-model="topics"
-                      placeholder="Enter a topic"
-                      secondary-placeholder=""></md-chips>
-            <bubble-chart data="degree_counts" selected="degrees"></bubble-chart>
-        </md-card>
-        <div flex="33">
-            <!--<md-card class="container">-->
-                <!--<h4>SELECTION</h4>-->
-                <!--<div>University: {{ degree.degrees[0].university.name }}</div>-->
-                <!--<div>Degree: {{ degree.degrees[0].name }}</div>-->
-                <!--<div>Number of theses: {{ degree.count }}</div>-->
-            <!--</md-card>-->
+        <div flex="66">
+            <md-card layout="row" class="filter-container">
+                <div class="chips-container" flex="90">
+                    <md-chips ng-model="topics"
+                              placeholder="Enter a topic"
+                              secondary-placeholder=""></md-chips>
+                </div>
+                <md-input-container class="language-container" flex="10">
+                    <label>Language</label>
+                    <md-select ng-model="language">
+                        <md-option><em>All</em></md-option>
+                        <md-option ng-repeat="language in languages" ng-value="language">
+                            {{language}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <span flex> </span>
+                <md-button class="md-icon-button reset-button" aria-label="Reset">
+                    <i class="material-icons" ng-click="init()">autorenew</i>
+                </md-button>
+            </md-card>
             <md-card class="container">
-                <bar-chart data="topic_counts" selected="topics"></bar-chart>
+                <bubble-chart data="degree_counts" selected="degrees"></bubble-chart>
+                <span class="bubble-chart-help"><i>Zoom and pan with your mouse</i></span>
+            </md-card>
+        </div>
+        <div flex="33">
+            <md-card class="container">
+                <md-nav-bar
+                        md-selected-nav-item="currentPage"
+                        nav-bar-aria-label="navigation links">
+                    <md-nav-item md-nav-click="goto('page1')" name="page1">
+                        TOPICS
+                    </md-nav-item>
+                    <md-nav-item md-nav-click="goto('page2')" name="page2">
+                        DEGREES
+                    </md-nav-item>
+                    <md-nav-item md-nav-click="goto('page3')" name="page3">
+                        UNIVERSITIES
+                    </md-nav-item>
+                    <md-nav-item md-nav-click="goto('page4')" name="page4">
+                        THESES
+                    </md-nav-item>
+                </md-nav-bar>
+                <div class="ext-content">
+                    <bar-chart data="topic_counts" selected="topics"></bar-chart>
+                </div>
             </md-card>
         </div>
     </div>

@@ -27,11 +27,15 @@
     left: 0;
 }
 
+.bar-chart-container {
+    padding-top: 15px;
+}
+
 .bar-chart-container div {
-    font: 14px sans-serif;
+    font: 14px;
     text-align: left;
-    padding: 5px;
-    margin-top: 2px;
+    padding: 2px;
+    margin-top: 5px;
     cursor: pointer;
 }
 
@@ -40,7 +44,7 @@
     border-style: solid;
     border-width: 2px;
     border-color: rgb(63,81,181);
-    height: 10px;
+    height: 12px;
     opacity: 0.7;
 }
 
@@ -51,7 +55,7 @@
 
 .bar-number {
     color: white;
-    font-size: 10px;
+    font-size: 12px;
     float: right;
 }
 
@@ -76,5 +80,35 @@ circle {
 }
 
 .container {
-    padding: 10px;
+    padding: 20px;
+}
+
+.filter-container {
+    padding: 10px 10px 0px 10px;
+}
+
+.reset-button {
+    padding-top: 15px !important;
+}
+
+.bubble-chart-help {
+    font-size: 10px;
+    text-align: right;
+}
+
+/* Overwrites */
+.chips-container {
+    margin: 1px;
+    label {
+        font-size: 14px;
+        color: rgba(0,0,0,0.26);
+    }
+    .chip {
+        padding: 0;
+        line-height: 30px;
+        border-radius: 50%;
+        border: none;
+    }
+
+
 }

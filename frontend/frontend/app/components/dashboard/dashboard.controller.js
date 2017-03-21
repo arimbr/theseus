@@ -17,8 +17,15 @@ angular.module('app').controller('DashboardCtrl', [
         //    $scope.$apply();
         //    // check https://gist.github.com/vicapow/9496218
         //});
+
         $scope.init = function() {
             console.log("reseting dashboard");
+
+            $scope.currentPage = 'page1';
+
+            $scope.languages = ['Finnish', 'English', 'Swedish'];
+            $scope.language = '';
+
             $scope.degree_counts = [];
             $scope.topic_counts = [];
             $scope.degrees = [];
@@ -28,7 +35,7 @@ angular.module('app').controller('DashboardCtrl', [
                 $scope.degree_counts = data;
             });
 
-            Count.query({'group': 'topics', 'limit': 16}, function(data) {
+            Count.query({'group': 'topics', 'limit': 15}, function(data) {
                 $scope.topic_counts = data;
                 //$scope.$apply();
             });
@@ -49,7 +56,7 @@ angular.module('app').controller('DashboardCtrl', [
                 // Filter topics based on topics and degrees
                 Count.query({
                     'group': 'topics',
-                    'limit': 16,
+                    'limit': 15,
                     'where': where
                 }, function(data) {
                     $scope.topic_counts = data;

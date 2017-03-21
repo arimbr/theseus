@@ -47,7 +47,8 @@ angular.module('app').directive('barChart', function() {
                 d3.selectAll('.bar-chart-container').remove();  // Clean before drawing
 
                 // Dynamically get svg width
-                var width = element[0].getBoundingClientRect().width;
+                // Depending on layout, may need to access parent width
+                var width = element[0].parentElement.getBoundingClientRect().width;
                 var margin = {top: 10, right: 20, bottom: 10, left: 10};
                 var maxX = d3.max(data, function(d) {return +d.count});
 
