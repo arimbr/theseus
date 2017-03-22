@@ -64,7 +64,7 @@ angular.module('app').directive('bubbleChart', function() {
                 d3.selectAll('.bubble-chart-container').remove();  // Clean before drawing
 
                 var margin = {top: 20, right: 20, bottom: 20, left: 20},
-                    height = 740;
+                    height = 650;
 
                 var rMin = d3.min(data, function(d) {return d['count']});
                 var rMax = d3.max(data, function(d) {return d['count']})

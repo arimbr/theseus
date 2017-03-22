@@ -8,20 +8,27 @@
                 <span>Theseus Dashboard</span>
             </h2>
             <span flex> </span>
-            <md-button class="md-icon-button" aria-label="Help">
-                <i class="material-icons">help</i>
+            <md-button class="md-icon-button reset-button" aria-label="Reset">
+                <i class="material-icons" ng-click="init()">autorenew</i>
             </md-button>
         </div>
     </md-toolbar>
-    <div layout="row">
-        <div flex="66">
-            <md-card layout="row" class="filter-container">
-                <div class="chips-container" flex="90">
-                    <md-chips ng-model="topics"
-                              placeholder="Enter a topic"
-                              secondary-placeholder=""></md-chips>
-                </div>
-                <md-input-container class="language-container" flex="10">
+    <md-card class="filter-container">
+        <div layout="column" layout-gt-sm="row">
+            <div layout="row" flex>
+                <md-chips flex ng-model="topics" placeholder="Enter a topic" secondary-placeholder=""></md-chips>
+            </div>
+            <div layout="row" flex>
+                <md-input-container class="university-container" flex>
+                    <label>University</label>
+                    <md-select ng-model="university">
+                        <md-option><em>All</em></md-option>
+                        <md-option ng-repeat="university in universities" ng-value="university">
+                            {{university}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="language-container" flex>
                     <label>Language</label>
                     <md-select ng-model="language">
                         <md-option><em>All</em></md-option>
@@ -30,38 +37,58 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
-                <span flex> </span>
-                <md-button class="md-icon-button reset-button" aria-label="Reset">
-                    <i class="material-icons" ng-click="init()">autorenew</i>
-                </md-button>
-            </md-card>
-            <md-card class="container">
+            </div>
+        </div>
+    </md-card>
+    <div ng-if="includeDesktopTemplate" layout="row">
+        <md-card flex="50">
+            <div class="md-toolbar-tools">
+                <h3>DEGREES</h3>
+            </div>
+            <md-divider></md-divider>
+            <div class="container">
                 <bubble-chart data="degree_counts" selected="degrees"></bubble-chart>
-                <span class="bubble-chart-help"><i>Zoom and pan with your mouse</i></span>
-            </md-card>
-        </div>
-        <div flex="33">
-            <md-card class="container">
-                <md-nav-bar
-                        md-selected-nav-item="currentPage"
-                        nav-bar-aria-label="navigation links">
-                    <md-nav-item md-nav-click="goto('page1')" name="page1">
-                        TOPICS
-                    </md-nav-item>
-                    <md-nav-item md-nav-click="goto('page2')" name="page2">
-                        DEGREES
-                    </md-nav-item>
-                    <md-nav-item md-nav-click="goto('page3')" name="page3">
-                        UNIVERSITIES
-                    </md-nav-item>
-                    <md-nav-item md-nav-click="goto('page4')" name="page4">
-                        THESES
-                    </md-nav-item>
-                </md-nav-bar>
-                <div class="ext-content">
-                    <bar-chart data="topic_counts" selected="topics"></bar-chart>
-                </div>
-            </md-card>
-        </div>
+                <span class="bubble-chart-help"><i>You can zoom and pan</i></span>
+            </div>
+        </md-card>
+        <md-card flex="25">
+            <div class="md-toolbar-tools">
+                <h3>TOPICS</h3>
+            </div>
+            <md-divider></md-divider>
+            <div class="container">
+                <bar-chart data="topic_counts" selected="topics"></bar-chart>
+            </div>
+        </md-card>
+        <md-card flex="25">
+            <div class="md-toolbar-tools">
+                <h3>THESES</h3>
+            </div>
+            <md-divider></md-divider>
+            <div class="container">
+            </div>
+        </md-card>
+    </div>
+    <div ng-if="includeMobileTemplate">
+        <md-card>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="degrees">
+                    <md-content class="md-padding">
+                        <bubble-chart data="degree_counts" selected="degrees"></bubble-chart>
+                        <span class="bubble-chart-help"><i>You can zoom and pan</i></span>
+                    </md-content>
+                </md-tab>
+                <md-tab label="topics">
+                    <md-content class="md-padding">
+                        <bar-chart data="topic_counts" selected="topics"></bar-chart>
+                    </md-content>
+                </md-tab>
+                <md-tab label="theses">
+                    <md-content class="md-padding">
+
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-card>
     </div>
 </div>

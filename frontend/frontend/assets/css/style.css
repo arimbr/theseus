@@ -82,39 +82,22 @@ circle {
 }
 
 .container {
-    padding: 20px;
+    padding: 10px;
 }
 
 .filter-container {
     padding: 10px 10px 0px 10px;
 }
 
-.reset-button {
-    padding-top: 15px !important;
-}
-
 .bubble-chart-help {
     font-size: 10px;
-    text-align: right;
+    float: right;
 }
 
 .bubble-tooltip {
     text-align: center;
 }
 
-/* Overwrites */
-.chips-container {
-    margin: 1px;
-    label {
-        font-size: 14px;
-        color: rgba(0,0,0,0.26);
-    }
-    .chip {
-        padding: 0;
-        line-height: 30px;
-        border-radius: 50%;
-        border: none;
-    }
-
-
+.md-chips {
+    padding-bottom: 9px;
 }
