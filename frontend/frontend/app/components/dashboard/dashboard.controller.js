@@ -2,9 +2,10 @@ angular.module('app').controller('DashboardCtrl', [
     '$scope',
     '$window',
     'config',
-    'Count',
-    'DegreeCount',
-    function($scope, $window, config, Count, DegreeCount) {
+    'Topic',
+    'Degree',
+    'Thesis',
+    function($scope, $window, config, Topic, Degree, Thesis) {
 
         //d3.json('app/components/dashboard/most_popular_degrees.json', function(data) {
         //    $scope.degree_counts = data;
@@ -45,15 +46,25 @@ angular.module('app').controller('DashboardCtrl', [
             $scope.topic_counts = [];
             $scope.degrees = [];
             $scope.topics = [];
+            $scope.theses = [];
 
-            DegreeCount.query({}, function(data) {
+            Degree.query({}, function(data) {
                 $scope.degree_counts = data;
             });
 
-            Count.query({'group': 'topics', 'limit': 12}, function(data) {
+            Topic.query({'group': 'topics', 'limit': 12}, function(data) {
                 $scope.topic_counts = data;
                 //$scope.$apply();
             });
+
+            Thesis.query({'limit': 8, 'fields': "['titles', 'authors', 'urls']"}, function(data) {
+                $scope.theses = data;
+            });
+        };
+
+        $scope.openThesisURL = function(thesis) {
+            console.log("Clicked on thesis", thesis);
+            $window.open(thesis.urls[0]);
         };
 
         $scope.$watchCollection('degrees', function(newVal, oldVal) {
@@ -69,13 +80,22 @@ angular.module('app').controller('DashboardCtrl', [
                 }
 
                 // Filter topics based on topics and degrees
-                Count.query({
+                Topic.query({
                     'group': 'topics',
                     'limit': 12,
                     'where': where
                 }, function(data) {
                     $scope.topic_counts = data;
                     console.log('Updated topic counts after degrees update');
+                });
+
+                // Filter theses based on topics and degrees
+                Thesis.query({
+                    'limit': 8,
+                    'fields': "['titles', 'authors', 'urls']",
+                    'where': where
+                }, function(data) {
+                    $scope.theses = data;
                 });
             }
         });
@@ -93,7 +113,7 @@ angular.module('app').controller('DashboardCtrl', [
                 }
 
                 // Filter degrees only on topics
-                DegreeCount.query({
+                Degree.query({
                     'where': {'topics': where['topics']}
                 }, function(data) {
                     $scope.degree_counts = data;
@@ -103,7 +123,7 @@ angular.module('app').controller('DashboardCtrl', [
                 //$scope.degrees = [];
 
                 // Filter topics based on topics and degrees
-                Count.query({
+                Topic.query({
                     'group': 'topics',
                     'limit': 12,
                     'where': where
@@ -111,6 +131,15 @@ angular.module('app').controller('DashboardCtrl', [
                     $scope.topic_counts = data;
                     console.log('Updated topic counts after topics update');
                     //$scope.$apply();
+                });
+
+                // Filter theses based on topics and degrees
+                Thesis.query({
+                    'limit': 8,
+                    'fields': "['titles', 'authors', 'urls']",
+                    'where': where
+                }, function(data) {
+                    $scope.theses = data;
                 });
             };
         });

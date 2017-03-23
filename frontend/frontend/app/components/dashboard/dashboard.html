@@ -66,6 +66,15 @@
             </div>
             <md-divider></md-divider>
             <div class="container">
+                <md-list flex>
+                    <!--<md-subheader class="md-no-sticky">117,653 theses</md-subheader>-->
+                    <md-list-item class="md-2-line" ng-repeat="thesis in theses" ng-click="null">
+                        <div class="md-list-item-text" layout="column">
+                            <h3>{{ thesis.titles[0] }}</h3>
+                            <h4>{{ thesis.authors[0] }}</h4>
+                        </div>
+                    </md-list-item>
+                </md-list>
             </div>
         </md-card>
     </div>
@@ -85,7 +94,15 @@
                 </md-tab>
                 <md-tab label="theses">
                     <md-content class="md-padding">
-
+                        <md-list flex>
+                            <!--<md-subheader class="md-no-sticky">117,653 theses</md-subheader>-->
+                            <md-list-item class="md-2-line" ng-repeat="thesis in theses" ng-click="openThesisURL(thesis)">
+                                <div class="md-list-item-text" layout="column" target="_blank">
+                                    <h3>{{ thesis.titles[0] }}</h3>
+                                    <h4>{{ thesis.authors[0] }}</h4>
+                                </div>
+                            </md-list-item>
+                        </md-list>
                     </md-content>
                 </md-tab>
             </md-tabs>

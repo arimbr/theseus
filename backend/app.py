@@ -23,7 +23,7 @@ connection = MongoClient(
 db = connection[settings.MONGODB_DB]
 
 
-def build_pipeline(where=None, group=None, limit=None, unwind=False):
+def build_pipeline(where=None, group=None, limit=None, unwind=False, fields=None):
     """ Gets a pipeline to filter and aggregate documents
 
     Arguments:
@@ -37,7 +37,7 @@ def build_pipeline(where=None, group=None, limit=None, unwind=False):
      """
     pipeline = []
 
-    if '$' not in group:
+    if group and '$' not in group:
         group = '$' + group
 
     # Filter options
@@ -56,6 +56,10 @@ def build_pipeline(where=None, group=None, limit=None, unwind=False):
         limit = int(limit)
         pipeline.append({'$limit': limit})
 
+    if fields:
+        project = dict(zip(fields, [1]*len(fields)))
+        pipeline.append({'$project': project})
+
     return pipeline
 
 def jsonify(data):
@@ -66,33 +70,35 @@ def jsonify(data):
     """
     return json_util.dumps(data, indent=4, separators=(',', ': '))
 
+@app.route("/theses")
+def theses():
+    where = ast.literal_eval(request.args.get('where', '{}'))
+    limit = request.args.get('limit')
+    fields = ast.literal_eval(request.args.get('fields', '[]'))
+    pipeline = build_pipeline(where=where, limit=limit, fields=fields)
+    cursor = db.theses.aggregate(pipeline=pipeline)
+    theses = [t for t in cursor]
+    return jsonify(theses)
+
 
 # /counts?group=subject&limit=100
 # /counts?group=programme&limit=100
 # /counts?group=subjects&limit=100&where={"language":"en"}
 # /counts?group=subjects&limit=100&where={"collections":"com_10024_14"}
 # /counts?group=collections&limit=100&where={"keywords":"Python"}
-@app.route("/counts")
-def counts():
-    #import ipdb; ipdb.set_trace()
+@app.route("/topics")
+def topics():
     group = request.args.get('group')
     limit = request.args.get('limit')
     where = ast.literal_eval(request.args.get('where', '{}'))
     pipeline = build_pipeline(where=where, group=group, limit=limit, unwind=True)
     # TODO: should get theses variable from settings
     cursor = db.theses.aggregate(pipeline=pipeline)
-    counts = [d for d in cursor]
-    return jsonify(counts)
+    topics = [d for d in cursor]
+    return jsonify(topics)
 
 
 @app.route("/degrees")
-def degrees():
-    cursor = db.degrees.find()
-    degrees = [d for d in cursor]
-    return jsonify(degrees)
-
-
-@app.route("/degrees/counts")
 def degree_counts():
     where = ast.literal_eval(request.args.get('where', '{}'))
     pipeline = []

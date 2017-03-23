@@ -59,7 +59,7 @@ angular.module('app').directive('bubbleChart', function() {
 
             scope.render = function(data) {
 
-                console.log("Rendering bubble chart")
+                console.log("Rendering bubble chart");
 
                 d3.selectAll('.bubble-chart-container').remove();  // Clean before drawing
 
@@ -67,7 +67,7 @@ angular.module('app').directive('bubbleChart', function() {
                     height = 650;
 
                 var rMin = d3.min(data, function(d) {return d['count']});
-                var rMax = d3.max(data, function(d) {return d['count']})
+                var rMax = d3.max(data, function(d) {return d['count']});
 
                 // Rendering circles with same size while zooming
                 // https://bl.ocks.org/mbostock/2a39a768b1d4bc00a09650edef75ad39
@@ -87,10 +87,10 @@ angular.module('app').directive('bubbleChart', function() {
                     .append("g")
                     .call(zoom);
 
+                svg.call(tip);
+
                 // Dynamically get svg width
                 var width = element[0].getBoundingClientRect().width;
-
-                svg.call(tip);
 
 
                 var x = d3.scaleLinear()
