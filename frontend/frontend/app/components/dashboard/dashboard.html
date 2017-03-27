@@ -16,24 +16,24 @@
     <md-card class="filter-container">
         <div layout="column" layout-gt-sm="row">
             <div layout="row" flex="50">
-                <md-chips flex ng-model="topics" placeholder="Enter a topic" secondary-placeholder="" md-transform-chip="$chip.toLowerCase()"></md-chips>
+                <md-chips flex ng-model="selected_topics" placeholder="Enter a topic" secondary-placeholder="" md-transform-chip="$chip.toLowerCase()"></md-chips>
             </div>
             <div layout="row" flex="50">
                 <md-input-container class="university-container" flex>
                     <label>University</label>
-                    <md-select ng-model="university">
+                    <md-select ng-model="selected_university">
                         <md-option><em>All</em></md-option>
                         <md-option ng-repeat="university in universities" ng-value="university">
-                            {{university}}
+                            {{university.label}}
                         </md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container class="language-container" flex>
                     <label>Language</label>
-                    <md-select ng-model="language">
+                    <md-select ng-model="selected_language">
                         <md-option><em>All</em></md-option>
                         <md-option ng-repeat="language in languages" ng-value="language">
-                            {{language}}
+                            {{language.label}}
                         </md-option>
                     </md-select>
                 </md-input-container>
@@ -47,7 +47,7 @@
             </div>
             <md-divider></md-divider>
             <div class="container">
-                <bubble-chart data="degree_counts" selected="degrees"></bubble-chart>
+                <bubble-chart data="degrees" selected="selected_degrees"></bubble-chart>
                 <span class="bubble-chart-help"><i>You can zoom and pan</i></span>
             </div>
         </md-card>
@@ -57,7 +57,7 @@
             </div>
             <md-divider></md-divider>
             <div class="container">
-                <bar-chart data="topic_counts" selected="topics"></bar-chart>
+                <bar-chart data="topics" selected="selected_topics"></bar-chart>
             </div>
         </md-card>
         <md-card flex="25">
@@ -68,8 +68,8 @@
             <div class="container">
                 <md-list flex>
                     <!--<md-subheader class="md-no-sticky">117,653 theses</md-subheader>-->
-                    <md-list-item class="md-2-line" ng-repeat="thesis in theses" ng-click="null">
-                        <div class="md-list-item-text" layout="column">
+                    <md-list-item class="md-2-line" ng-repeat="thesis in theses" ng-click="openThesisURL(thesis)">
+                        <div class="md-list-item-text" layout="column" target="_blank">
                             <h3>{{ thesis.titles[0] }}</h3>
                             <h4>{{ thesis.authors[0] }}</h4>
                         </div>
@@ -83,13 +83,15 @@
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="degrees">
                     <md-content class="md-padding">
-                        <bubble-chart data="degree_counts" selected="degrees"></bubble-chart>
+                        <!--<md-subheader class="md-no-sticky">997 degrees</md-subheader>-->
+                        <bubble-chart data="degrees" selected="selected_degrees"></bubble-chart>
                         <span class="bubble-chart-help"><i>You can zoom and pan</i></span>
                     </md-content>
                 </md-tab>
                 <md-tab label="topics">
                     <md-content class="md-padding">
-                        <bar-chart data="topic_counts" selected="topics"></bar-chart>
+                        <md-subheader class="md-no-sticky">20,000 topics</md-subheader>
+                        <bar-chart data="topics" selected="selected_topics"></bar-chart>
                     </md-content>
                 </md-tab>
                 <md-tab label="theses">

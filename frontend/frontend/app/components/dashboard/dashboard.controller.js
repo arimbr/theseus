@@ -32,32 +32,41 @@ angular.module('app').controller('DashboardCtrl', [
         }
 
         $scope.init = function() {
-            console.log("reseting dashboard");
+            console.log("Reseting dashboard");
 
             $scope.currentPage = 'page1';
 
-            $scope.languages = ['Finnish', 'English', 'Swedish'];
-            $scope.language = '';
+            $scope.languages = [
+                {_id: 'fi', label: 'Finnish'},
+                {_id: 'en', label: 'English'},
+                {_id: 'sv', label: 'Swedish'}
+            ];
+            $scope.universities = [
+                {_id: 'com_10024_06', label: 'Metropolia Ammatikorkeakoulu'},
+                {_id: 'com_10025_08', label: 'Laurea Ammatikorkeakoulu'}
+            ];
 
-            $scope.universities = ['Metropolia Ammatikorkeakoulu', 'Laurea Ammatikorkeakoulu'];
-            $scope.university = '';
+            // Graph filters
+            $scope.selected_university = {};
+            $scope.selected_language = {};
+            $scope.selected_degrees = [];
+            $scope.selected_topics = [];
 
-            $scope.degree_counts = [];
-            $scope.topic_counts = [];
+            // Graphs data
             $scope.degrees = [];
             $scope.topics = [];
             $scope.theses = [];
 
             Degree.query({}, function(data) {
-                $scope.degree_counts = data;
+                $scope.degrees = data;
             });
 
-            Topic.query({'group': 'topics', 'limit': 12}, function(data) {
-                $scope.topic_counts = data;
+            Topic.query({'group': 'topics', 'limit': 14}, function(data) {
+                $scope.topics = data;
                 //$scope.$apply();
             });
 
-            Thesis.query({'limit': 8, 'fields': "['titles', 'authors', 'urls']"}, function(data) {
+            Thesis.query({'limit': 10, 'fields': "['titles', 'authors', 'urls']"}, function(data) {
                 $scope.theses = data;
             });
         };
@@ -67,81 +76,77 @@ angular.module('app').controller('DashboardCtrl', [
             $window.open(thesis.urls[0]);
         };
 
-        $scope.$watchCollection('degrees', function(newVal, oldVal) {
+        $scope.getWhereClause = function() {
+            var where = {};
+            if($scope.selected_topics.length > 0) {
+                where['topics'] = {'$in': $scope.selected_topics}
+            }
+            if($scope.selected_degrees.length > 0) {
+                where['degree.id'] = {'$in': $scope.selected_degrees}
+            }
+            if($scope.selected_language.hasOwnProperty('_id')) {
+                where['language'] = $scope.selected_language._id
+            }
+            return where;
+        };
+
+        $scope.updateDegrees = function(where) {
+            Degree.query({
+                // Don't filter degrees based on selected degrees
+                'where': {'topics': where['topics'], 'language': where['language']}
+            }, function(data) {
+                $scope.degrees = data;
+                console.log('Updated degree counts');
+            });
+        };
+
+        $scope.updateTopics = function(where) {
+            Topic.query({
+                'group': 'topics',
+                'limit': 14,
+                'where': where
+            }, function(data) {
+                $scope.topics = data;
+                console.log('Updated topic counts');
+                //$scope.$apply();
+            });
+        };
+
+        $scope.updateTheses = function(where) {
+            Thesis.query({
+                'limit': 10,
+                'fields': "['titles', 'authors', 'urls']",
+                'where': where
+            }, function(data) {
+                $scope.theses = data;
+                console.log('Updated theses counts');
+            });
+        };
+
+        $scope.$watchCollection('selected_degrees', function(newVal, oldVal) {
             if (newVal != oldVal) {
-                console.log('Degrees changed to:', newVal);
-
-                var where = {};
-                if($scope.topics.length > 0) {
-                    where['topics'] = {'$in': $scope.topics}
-                }
-                if($scope.degrees.length > 0) {
-                    where['degree.id'] = {'$in': $scope.degrees}
-                }
-
-                // Filter topics based on topics and degrees
-                Topic.query({
-                    'group': 'topics',
-                    'limit': 12,
-                    'where': where
-                }, function(data) {
-                    $scope.topic_counts = data;
-                    console.log('Updated topic counts after degrees update');
-                });
-
-                // Filter theses based on topics and degrees
-                Thesis.query({
-                    'limit': 8,
-                    'fields': "['titles', 'authors', 'urls']",
-                    'where': where
-                }, function(data) {
-                    $scope.theses = data;
-                });
+                var where = $scope.getWhereClause();
+                $scope.updateTopics(where);
+                $scope.updateTheses(where);
             }
         });
 
-        $scope.$watchCollection('topics', function(newVal, oldVal) {
+        $scope.$watchCollection('selected_topics', function(newVal, oldVal) {
             if (newVal != oldVal) {
-                console.log('Topics changed to: ', newVal);
+                var where = $scope.getWhereClause();
+                $scope.updateDegrees(where);
+                $scope.updateTopics(where);
+                $scope.updateTheses(where);
+            }
+        });
 
-                var where = {};
-                if($scope.topics.length > 0) {
-                    where['topics'] = {'$in': $scope.topics}
-                }
-                if($scope.degrees.length > 0) {
-                    where['degree.id'] = {'$in': $scope.degrees}
-                }
-
-                // Filter degrees only on topics
-                Degree.query({
-                    'where': {'topics': where['topics']}
-                }, function(data) {
-                    $scope.degree_counts = data;
-                    console.log('Updated degree counts after topics update');
-                });
-                // Remove filter on degree when clicking on topic
-                //$scope.degrees = [];
-
-                // Filter topics based on topics and degrees
-                Topic.query({
-                    'group': 'topics',
-                    'limit': 12,
-                    'where': where
-                }, function(data) {
-                    $scope.topic_counts = data;
-                    console.log('Updated topic counts after topics update');
-                    //$scope.$apply();
-                });
-
-                // Filter theses based on topics and degrees
-                Thesis.query({
-                    'limit': 8,
-                    'fields': "['titles', 'authors', 'urls']",
-                    'where': where
-                }, function(data) {
-                    $scope.theses = data;
-                });
-            };
+        $scope.$watchCollection('selected_language', function(newVal, oldVal) {
+            if (newVal != oldVal) {
+                var where = $scope.getWhereClause();
+                $scope.updateDegrees(where);
+                $scope.updateTopics(where);
+                $scope.updateTheses(where);
+            }
         });
 
         // Start dashboard
