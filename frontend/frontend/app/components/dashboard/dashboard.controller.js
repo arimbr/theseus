@@ -74,7 +74,7 @@ angular.module('app').controller('DashboardCtrl', [
                 //$scope.$apply();
             });
 
-            Thesis.query({'limit': 8, 'fields': "['titles', 'authors', 'urls']"}, function(data) {
+            Thesis.query({'limit': 10, 'fields': "['titles', 'authors', 'urls']"}, function(data) {
                 $scope.theses = data;
             });
         };
@@ -122,7 +122,7 @@ angular.module('app').controller('DashboardCtrl', [
 
         $scope.updateTheses = function(where) {
             Thesis.query({
-                'limit': 8,
+                'limit': 10,
                 'fields': "['titles', 'authors', 'urls']",
                 'where': where
             }, function(data) {

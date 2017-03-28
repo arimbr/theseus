@@ -10,29 +10,32 @@ angular.module('app').directive('bubbleChart', function() {
             var tip = d3.tip()
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
-                .html(function(d) {
-                    return "<div class='bubble-tooltip'>" +
-                        "<span><h3>" + d.degrees[0].name + "</h3></span>" +
-                        "<span>" + d.degrees[0].university.name + "</span>" + "<br><br>" +
-                        "<span>" + d.count + " theses" +"</span>" + "<br>" +
-                        "</div>"
-                });
+                .html(getTipHTML);
+
+            function getTipHTML(d) {
+                var clss = scope.selected.indexOf(d._id) > -1 ? 'selected-tooltip' : 'bubble-tooltip';
+                var html = "<div class='" + clss + "'>"
+                    + "<span><h3>" + d.degrees[0].name + "</h3></span>"
+                    + "<span>" + d.degrees[0].university.name
+                    + "</span><br><br>"
+                    + "<span>" + d.count + " theses" +"</span><br>"
+                    + "</div>" ;
+                return html;
+            }
 
             function checkSelected(d) {
-                if(scope.selected.indexOf(d._id) > -1) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return scope.selected.indexOf(d._id) > -1 ? true : false;
             }
 
             function handleMouseover(d) {
-                d3.select(this).style("stroke", "rgb(63,81,181)");
+                d3.select(this)
+                    .style("stroke", "rgb(24, 68, 126)");
                 tip.show(d);
             }
 
             function handleMouseout(d) {
-                d3.select(this).style("stroke", "orange");
+                d3.select(this)
+                    .style("stroke", "rgb(237, 167, 0)");
                 tip.hide(d);
             }
 
@@ -64,7 +67,7 @@ angular.module('app').directive('bubbleChart', function() {
                 d3.selectAll('.bubble-chart-container').remove();  // Clean before drawing
 
                 var margin = {top: 20, right: 20, bottom: 20, left: 20},
-                    height = 650;
+                    height = 700;
 
                 var rMin = d3.min(data, function(d) {return d['count']});
                 var rMax = d3.max(data, function(d) {return d['count']});

@@ -2,30 +2,51 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+.brand {
+    letter-spacing: 3px;
+}
+
+.header-content {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.footer-content {
+    float: right;
+    max-width: 1000px;
+    margin: auto;
+    font-size: 16px;
+}
+
 .toolbar {
     background: whitesmoke !important;
-    color: black !important;
+    color: rgb(24, 68, 126) !important
+}
+
+md-ink-bar {
+    color: rgb(181, 28, 49) !important;
+    background: rgb(181, 28, 49) !important;
 }
 
 .d3-tip {
+    color: white;
     line-height: 1;
     padding: 10px;
-    background: rgba(255,165,0, 0.7);
-    color: #fff;
+    background: rgba(24, 68, 126, 0.7);
     border-radius: 10px;
     border-style: solid;
     border-width: 2px;
-    border-color: rgba(63,81,181, 0.4);
+    border-color: rgba(24, 68, 126, 0.7);
 }
 
 /* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
     box-sizing: border-box;
     display: inline;
-    font-size: 10px;
+    font-size: 15px;
     width: 100%;
     line-height: 1;
-    color: rgba(255,165,0, 0.7);
+    color: rgba(24, 68, 126, 0.7);;
     content: "\25BC";
     position: absolute;
     text-align: center;
@@ -43,31 +64,31 @@ body {
 }
 
 .bar-chart-container div {
-    font-size: 14px;
+    font-size: 18px;
     text-align: left;
-    padding: 2px;
     margin-top: 5px;
     cursor: pointer;
 }
 
 .bar {
-    background: rgb(63,81,181);
+    background: rgb(24, 68, 126);
     border-style: solid;
-    border-width: 2px;
-    border-color: rgb(63,81,181);
-    height: 12px;
+    border-width: 3px;
+    border-color: white;
+    height: 22px;
     opacity: 0.7;
 }
 
 .selected-bar {
-    border-color: orange !important;
-    background: orange !important;
+    border-color: white;
+    background: rgb(237, 167, 0) !important;
 }
 
 .bar-number {
     color: white;
-    font-size: 12px;
+    font-size: 14px;
     float: right;
+    padding: 2px;
 }
 
 rect {
@@ -79,15 +100,15 @@ rect {
 
 circle {
     cursor: pointer;
-    fill: orange;
+    fill: rgb(237, 167, 0);
     opacity: 0.5;
     stroke-width: 2px;
-    stroke: orange;
+    stroke: rgb(237, 167, 0);
 }
 
 .selected-circle {
-    fill: rgb(63,81,181) !important;
-    stroke: rgb(63,81,181) !important;
+    fill: rgb(24, 68, 126) !important;
+    stroke: rgb(24, 68, 126) !important;
 }
 
 .container {
@@ -101,10 +122,6 @@ circle {
 .chart-help {
     font-size: 10px;
     float: right;
-}
-
-.bubble-tooltip {
-    text-align: center;
 }
 
 .md-chips {
@@ -121,8 +138,8 @@ circle {
     background-repeat: no-repeat;
 }
 
-.kpis {
-    margin: 200px;
+.kpis {
+    margin: 5px;
 }
 
 .kpi {
@@ -155,25 +172,17 @@ circle {
     margin: auto;
 }
 
-.footer {
-    height: 200px;
-    text-align: center;
-
-    padding: 20px;
-}
-
 a.source {
     color: inherit;
-    text-decoration: none;
 }
 
 a.source:visited{
-    text-decoration: none;
     color: inherit;
 }
 
-.header {
-    background: rgb(63,81,181);
+.footer-toolbar {
+    max-width: 1000px;
+    margin: auto;
 }
 
 .main {
@@ -193,7 +202,7 @@ a.source:visited{
 .main-action-button {
     padding: 5px 45px;
     margin: auto;
-    background-color: rgba(255,165,0, 0.9) !important;
+    background-color: rgba(237, 167, 0, 0.7) !important;
     color: white !important;
     font-weight: bold;
 }
@@ -201,9 +210,17 @@ a.source:visited{
 .action-button {
     padding: 5px 45px;
     margin: auto;
-    background-color: rgba(255,165,0, 0.7) !important;
+    background-color: rgba(237, 167, 0, 0.7) !important;
     color: white !important;
     font-weight: bold;
+}
+
+.pitch-phrase {
+    line-height: 25px
+}
+
+.pitch-phrase-break {
+    display: none;
 }
 
 @media (min-width: 600px) {
@@ -216,6 +233,10 @@ a.source:visited{
         text-align: center;
         height: 400px;
         padding: 100px 100px 0 100px;
+    }
+
+    .pitch-phrase-break {
+        display: block;
     }
 
     .feature {

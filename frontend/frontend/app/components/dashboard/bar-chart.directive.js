@@ -67,11 +67,13 @@ angular.module('app').directive('barChart', function() {
                     .enter().append("div")
                     .on("click", handleClick)
                     .on("mouseover", function (d) {
-                        d3.select(this).select('.bar').style("border-color", "orange");
+                        d3.select(this).select('.bar')
+                            .style("border-color", "rgb(237, 167, 0)");
 
                     })
                     .on("mouseout", function (d) {
-                        d3.select(this).select('.bar').style("border-color", "rgb(63,81,181)");
+                        d3.select(this).select('.bar')
+                            .style("border-color", "white");
 
                     });
 

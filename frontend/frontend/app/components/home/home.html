@@ -1,8 +1,8 @@
 <header>
     <md-toolbar class="toolbar">
-        <div class="md-toolbar-tools">
+        <div class="header-content md-toolbar-tools">
             <h1>
-                <span>Ammattiko.</span>
+                <span><a href="/" class="brand">Ammattiko.</a></span>
             </h1>
             <span flex> </span>
         </div>
@@ -11,7 +11,7 @@
 <main>
     <div class="pitch">
         <h1>DISCOVER FINNISH<br>UNIVERSITIES OF APPLIED SCIENCES</h1>
-        <p>Ammattiko is an interactive tool to explore the data in the <a class="source" href="http://theseus.fi">Open Repository of Universities of Applied Sciences in Finland</a>.</p>
+        <p class="pitch-phrase">Ammattiko is an interactive visualization tool to explore the data of <a class="source" href="http://theseus.fi">Theseus</a>,<br class="pitch-phrase-break"> the Open Repository of Universities of Applied Sciences in Finland.</p>
         <br>
         <md-button class="main-action-button md-raised" ng-click="goDashboard()">GET STARTED</md-button>
         <br>
@@ -33,7 +33,7 @@
                 <md-card-title-text class="feature-title" flex="50">
                     <span class="md-headline">DISCOVER DEGREES</span>
                     <hr>
-                    <span class="md-subhead">Find degrees based on your interests. The intuitive interface allows you to find similar degrees through an interactive map and compare them based on theses topics.</span>
+                    <span class="md-subhead">Find degrees based on your interests. The dashboard allows you to find similar degrees through an interactive map and compare them based on theses topics.</span>
                     <br>
                     <md-button class="action-button md-raised" ng-click="goDashboard()">Access dashboard</md-button>
                 </md-card-title-text>
@@ -51,7 +51,7 @@
                 <md-card-title-text class="feature-title" flex="50" flex-order="1" flex-order-gt-xs="2">
                     <span class="md-headline">DISCOVER TOPICS</span>
                     <hr>
-                    <span class="md-subhead">Find the most popular topics for a university or degree. The intuitive interface allows you to find related topics and relevant published theses.</span>
+                    <span class="md-subhead">Find the most popular topics for a university or degree. The dashboard allows you to find related topics and relevant theses.</span>
                     <br>
                     <md-button class="action-button md-raised" ng-click="goDashboard()">Access dashboard</md-button>
                 </md-card-title-text>
@@ -62,7 +62,7 @@
                 <md-card-title-text class="feature-title" flex="50">
                     <span class="md-headline">DISCOVER THESES</span>
                     <hr>
-                    <span class="md-subhead">Find the most relevant theses based on your interests written by university graduates. Get full access to the theses at <a class="source" href="http://theseus.fi">Theseus.fi</a>.</span>
+                    <span class="md-subhead">Find the most relevant theses written by university graduates. Get full access to the theses at <a class="source" href="http://theseus.fi">Theseus.fi</a>.</span>
                     <br>
                     <md-button class="action-button md-raised" ng-click="goDashboard()">Access dashboard</md-button>
                 </md-card-title-text>
@@ -75,8 +75,8 @@
 </main>
 <footer>
     <md-toolbar class="toolbar">
-        <div class="md-toolbar-tools">
-            <p>Contact</p>
+        <div class="footer-content md-toolbar-tools">
+            <span><a href="mailto:ari.bajorouvinen@metropolia.fi">CONTACT</a></span>
         </div>
     </md-toolbar>
 </footer>
