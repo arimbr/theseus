@@ -1,18 +1,23 @@
-<div>
+<header>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <md-button class="md-icon-button" aria-label="Menu">
-                <i class="material-icons">menu</i>
+            <md-button class="md-icon-button" aria-label="Home" ng-click="goHome()">
+                <i class="material-icons">home</i>
             </md-button>
             <h2>
-                <span>Theseus Dashboard</span>
+                <span>Ammattiko Dashboard</span>
             </h2>
             <span flex> </span>
             <md-button class="md-icon-button reset-button" aria-label="Reset">
                 <i class="material-icons" ng-click="init()">autorenew</i>
             </md-button>
+            <md-button class="md-icon-button reset-button" aria-label="Help">
+                <i class="material-icons">help</i>
+            </md-button>
         </div>
     </md-toolbar>
+</header>
+<main>
     <md-card class="filter-container">
         <div layout="column" layout-gt-sm="row">
             <div layout="row" flex="50">
@@ -48,7 +53,7 @@
             <md-divider></md-divider>
             <div class="container">
                 <bubble-chart data="degrees" selected="selected_degrees"></bubble-chart>
-                <span class="bubble-chart-help"><i>You can zoom and pan</i></span>
+                <span class="chart-help"><i>Hover, click, zoom and pan</i></span>
             </div>
         </md-card>
         <md-card flex="25">
@@ -58,6 +63,7 @@
             <md-divider></md-divider>
             <div class="container">
                 <bar-chart data="topics" selected="selected_topics"></bar-chart>
+                <!--<span class="chart-help"><i>Click</i></span>-->
             </div>
         </md-card>
         <md-card flex="25">
@@ -85,12 +91,11 @@
                     <md-content class="md-padding">
                         <!--<md-subheader class="md-no-sticky">997 degrees</md-subheader>-->
                         <bubble-chart data="degrees" selected="selected_degrees"></bubble-chart>
-                        <span class="bubble-chart-help"><i>You can zoom and pan</i></span>
                     </md-content>
                 </md-tab>
                 <md-tab label="topics">
                     <md-content class="md-padding">
-                        <md-subheader class="md-no-sticky">20,000 topics</md-subheader>
+                        <!--<md-subheader class="md-no-sticky">20,000 topics</md-subheader>-->
                         <bar-chart data="topics" selected="selected_topics"></bar-chart>
                     </md-content>
                 </md-tab>
@@ -110,4 +115,11 @@
             </md-tabs>
         </md-card>
     </div>
-</div>
+</main>
+<footer>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <p>Contact</p>
+        </div>
+    </md-toolbar>
+</footer>

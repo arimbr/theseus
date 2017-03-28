@@ -1,11 +1,12 @@
 angular.module('app').controller('DashboardCtrl', [
     '$scope',
     '$window',
+    '$location',
     'config',
     'Topic',
     'Degree',
     'Thesis',
-    function($scope, $window, config, Topic, Degree, Thesis) {
+    function($scope, $window, $location, config, Topic, Degree, Thesis) {
 
         //d3.json('app/components/dashboard/most_popular_degrees.json', function(data) {
         //    $scope.degree_counts = data;
@@ -21,6 +22,7 @@ angular.module('app').controller('DashboardCtrl', [
         //});
 
         // http://stackoverflow.com/questions/33303274/change-the-view-based-on-screen-size
+        // TODO: refactor to function
         $scope.includeDesktopTemplate = false;
         $scope.includeMobileTemplate = false;
         var screenWidth = $window.innerWidth;
@@ -30,6 +32,10 @@ angular.module('app').controller('DashboardCtrl', [
         } else {
             $scope.includeDesktopTemplate = true;
         }
+
+        $scope.goHome = function () {
+            $location.path('/');
+        };
 
         $scope.init = function() {
             console.log("Reseting dashboard");
@@ -57,16 +63,18 @@ angular.module('app').controller('DashboardCtrl', [
             $scope.topics = [];
             $scope.theses = [];
 
+            // TODO: refactor to include initial data load on watch
+            // Initial data
             Degree.query({}, function(data) {
                 $scope.degrees = data;
             });
 
-            Topic.query({'group': 'topics', 'limit': 14}, function(data) {
+            Topic.query({'group': 'topics', 'limit': 12}, function(data) {
                 $scope.topics = data;
                 //$scope.$apply();
             });
 
-            Thesis.query({'limit': 10, 'fields': "['titles', 'authors', 'urls']"}, function(data) {
+            Thesis.query({'limit': 8, 'fields': "['titles', 'authors', 'urls']"}, function(data) {
                 $scope.theses = data;
             });
         };
@@ -103,7 +111,7 @@ angular.module('app').controller('DashboardCtrl', [
         $scope.updateTopics = function(where) {
             Topic.query({
                 'group': 'topics',
-                'limit': 14,
+                'limit': 12,
                 'where': where
             }, function(data) {
                 $scope.topics = data;
@@ -114,7 +122,7 @@ angular.module('app').controller('DashboardCtrl', [
 
         $scope.updateTheses = function(where) {
             Thesis.query({
-                'limit': 10,
+                'limit': 8,
                 'fields': "['titles', 'authors', 'urls']",
                 'where': where
             }, function(data) {

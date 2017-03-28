@@ -1,1 +1,82 @@
-<p>Welcome!</p>
+<header>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h1>
+                <span>Ammattiko.</span>
+            </h1>
+            <span flex> </span>
+        </div>
+    </md-toolbar>
+</header>
+<main>
+    <div class="pitch">
+        <h1>DISCOVER FINNISH<br>UNIVERSITIES OF APPLIED SCIENCES</h1>
+        <p>Ammattiko is an interactive tool to explore the data in the Open Repository of Universities of Applied Sciences in Finland available at <a class="source" href="http://theseus.fi">theseus.fi</a></p>
+        <br>
+        <md-button class="action-button md-raised" ng-click="goDashboard()">GET STARTED</md-button>
+        <br>
+    </div>
+    <div class="kpis" layout="column" layout-gt-sm="row" layout-align="center">
+        <div layout="row" flex>
+            <md-card class="kpi" flex><span class="number">24</span> UNIVERSITIES</md-card>
+            <md-card class="kpi" flex><span class="number">978</span> DEGREES</md-card>
+        </div>
+        <div layout="row" flex>
+            <md-card class="kpi" flex><span class="number">22,241</span> TOPICS</md-card>
+            <md-card class="kpi" flex><span class="number">127,012</span> THESES</md-card>
+        </div>
+    </div>
+    </div>
+    <div class="features" layout="column">
+        <md-card class="feature" flex="50">
+            <md-card-title layout="column" layout-gt-sm="row">
+                <md-card-title-text class="feature-title">
+                    <span class="md-headline">Discover degrees</span>
+                    <hr>
+                    <span class="md-subhead">Find degrees based on your interests. The intuitive interface allows you to find similar degrees through an interactive map and compare them based on theses topics.</span>
+                    <br>
+                    <md-button class="action-button md-raised" ng-click="goDashboard()">Access dashboard</md-button>
+                </md-card-title-text>
+                <md-card-title-media  class="feature-image">
+                    <img src="/assets/img/degrees.png" class="screenshot" alt="finland amk degrees"/>
+                </md-card-title-media>
+            </md-card-title>
+            </md-card-title>
+        </md-card>
+        <md-card class="feature" flex="50">
+            <md-card-title layout="column" layout-gt-sm="row">
+                <md-card-title-text class="feature-title">
+                    <span class="md-headline">Discover topics</span>
+                    <hr>
+                    <span class="md-subhead">Find the most popular topics for a university or degree. The intuitive interface allows you to find related topics and relevant published theses.</span>
+                    <br>
+                    <md-button class="action-button md-raised" ng-click="goDashboard()">Access dashboard</md-button>
+                </md-card-title-text>
+                <md-card-title-media class="feature-image">
+                    <img src="/assets/img/topics.png" class="screenshot" alt="finland amk topics"/>
+                </md-card-title-media>
+            </md-card-title>
+        </md-card>
+        <md-card class="feature" flex="50">
+            <md-card-title layout="column" layout-gt-sm="row">
+                <md-card-title-text class="feature-title">
+                    <span class="md-headline">Discover theses</span>
+                    <hr>
+                    <span class="md-subhead">Find the most relevant theses based on your interests. Access to the theses through the Theseus repository.</span>
+                    <br>
+                    <md-button class="action-button md-raised" ng-click="goDashboard()">Access dashboard</md-button>
+                </md-card-title-text>
+                <md-card-title-media class="feature-image">
+                    <img src="/assets/img/theses.png" class="screenshot" alt="finland amk theses"/>
+                </md-card-title-media>
+            </md-card-title>
+        </md-card>
+    </div>
+</main>
+<footer>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <p>Contact</p>
+        </div>
+    </md-toolbar>
+</footer>

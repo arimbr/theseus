@@ -34,7 +34,7 @@
 }
 
 .bar-chart-container div {
-    font: 14px;
+    font-size: 14px;
     text-align: left;
     padding: 2px;
     margin-top: 5px;
@@ -86,10 +86,10 @@ circle {
 }
 
 .filter-container {
-    padding: 10px 10px 0px 10px;
+    padding: 10px 10px 0 10px;
 }
 
-.bubble-chart-help {
+.chart-help {
     font-size: 10px;
     float: right;
 }
@@ -100,4 +100,111 @@ circle {
 
 .md-chips {
     padding-bottom: 9px;
+}
+
+.pitch {
+    height: 350px;
+    padding: 20px;
+    color: white;
+    background-image: url(/assets/img/auditorium.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.kpis {
+    margin: 200px;
+}
+
+.kpi {
+    padding: 20px;
+    text-align: center;
+}
+
+.number {
+    font-size: 30px;
+}
+
+.feature {
+    max-width: 1000px !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.feature-title {
+    margin: 20px 10px;
+}
+
+.screenshot {
+    max-width: 100% !important;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+
+.footer {
+    height: 200px;
+    text-align: center;
+
+    padding: 20px;
+}
+
+a.source {
+    color: white;
+    text-decoration: none;
+}
+
+a.source:visited{
+    text-decoration: none;
+    color: white;
+}
+
+.header {
+    background: rgb(63,81,181);
+}
+
+.main {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-image: url(/assets/img/auditorium.jpg);
+    background-repeat: no-repeat;
+}​
+
+.features {
+    margin: 50px;
+}
+
+.action-button {
+    padding: 5px 45px;
+    margin: auto;
+}
+
+@media (min-width: 960px) {
+
+    .pitch {
+        text-align: center;
+        height: 400px;
+        padding: 100px 100px 0 100px;
+    }
+
+    .feature {
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .feature-title {
+        margin: 30px;
+    }
+
+    .kpis {
+        margin: 20px auto 10px auto !important;
+        max-width: 1000px;
+    }
+
+    .kpi {
+        max-width: 480px !important;
+    }
 }
