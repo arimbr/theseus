@@ -6,13 +6,12 @@ body {
     letter-spacing: 3px;
 }
 
-.header-content {
+.home-footer {
     max-width: 1000px;
     margin: auto;
 }
 
-.footer-content {
-    margin: auto;
+.footer-item {
     font-size: 16px;
 }
 
