@@ -49,7 +49,7 @@ angular.module('app').directive('barChart', function() {
                 // Dynamically get svg width
                 // Depending on layout, may need to access parent width
                 var width = element[0].parentElement.getBoundingClientRect().width;
-                var margin = {top: 10, right: 20, bottom: 10, left: 20};
+                var margin = {top: 10, right: 30, bottom: 10, left: 20};
                 var maxX = d3.max(data, function(d) {return +d.count});
 
                 var svg = d3.select(element[0])
@@ -89,8 +89,10 @@ angular.module('app').directive('barChart', function() {
                         return x(d.count) + 'px';
                     })
                     .classed("selected-bar", checkSelected)
+                    .append("span")
+                    .attr("class", "bar-number")
                     .html(function(d) {
-                        return "<span class='bar-number'>" + d.count + "</span>"
+                        return d.count;
                     });
             };
 
