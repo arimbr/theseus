@@ -98,8 +98,15 @@ def topics():
     return jsonify(topics)
 
 
+@app.route("/universities")
+def universities():
+    cursor = db.universities.find()
+    universities = [t for t in cursor]
+    return jsonify(universities)
+
+
 @app.route("/degrees")
-def degree_counts():
+def degrees():
     where = ast.literal_eval(request.args.get('where', '{}'))
     pipeline = []
     if where:

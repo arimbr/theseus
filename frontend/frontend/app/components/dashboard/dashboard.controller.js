@@ -5,8 +5,9 @@ angular.module('app').controller('DashboardCtrl', [
     'config',
     'Topic',
     'Degree',
+    'University',
     'Thesis',
-    function($scope, $window, $location, config, Topic, Degree, Thesis) {
+    function($scope, $window, $location, config, Topic, Degree, University, Thesis) {
 
         //d3.json('app/components/dashboard/most_popular_degrees.json', function(data) {
         //    $scope.degree_counts = data;
@@ -48,8 +49,8 @@ angular.module('app').controller('DashboardCtrl', [
                 {_id: 'sv', label: 'Swedish'}
             ];
             $scope.universities = [
-                {_id: 'com_10024_06', label: 'Metropolia Ammatikorkeakoulu'},
-                {_id: 'com_10025_08', label: 'Laurea Ammatikorkeakoulu'}
+                {_id: 'com_10024_6', name: 'Metropolia Ammatikorkeakoulu'},
+                {_id: 'com_10024_12', name: 'Laurea Ammatikorkeakoulu'}
             ];
 
             // Graph filters
@@ -65,6 +66,11 @@ angular.module('app').controller('DashboardCtrl', [
 
             // TODO: refactor to include initial data load on watch
             // Initial data
+
+            University.query({}, function(data) {
+                $scope.universities = data;
+            });
+
             Degree.query({}, function(data) {
                 $scope.degrees = data;
             });
@@ -95,13 +101,16 @@ angular.module('app').controller('DashboardCtrl', [
             if($scope.selected_language.hasOwnProperty('_id')) {
                 where['language'] = $scope.selected_language._id
             }
+            if($scope.selected_university.hasOwnProperty('_id')) {
+                where['university.id'] = $scope.selected_university._id;
+            }
             return where;
         };
 
         $scope.updateDegrees = function(where) {
             Degree.query({
                 // Don't filter degrees based on selected degrees
-                'where': {'topics': where['topics'], 'language': where['language']}
+                'where': {'topics': where['topics'], 'language': where['language'], 'university.id': where['university.id']}
             }, function(data) {
                 $scope.degrees = data;
                 console.log('Updated degree counts');
@@ -149,6 +158,15 @@ angular.module('app').controller('DashboardCtrl', [
         });
 
         $scope.$watchCollection('selected_language', function(newVal, oldVal) {
+            if (newVal != oldVal) {
+                var where = $scope.getWhereClause();
+                $scope.updateDegrees(where);
+                $scope.updateTopics(where);
+                $scope.updateTheses(where);
+            }
+        });
+
+        $scope.$watchCollection('selected_university', function(newVal, oldVal) {
             if (newVal != oldVal) {
                 var where = $scope.getWhereClause();
                 $scope.updateDegrees(where);
