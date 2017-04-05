@@ -127,6 +127,9 @@ def degrees():
     pipeline.append(
         {'$match': {'degrees': {'$ne': []}}}
     )
+    pipeline.append(
+        {'$sort': {'count': -1}}
+    )
     cursor = db.theses.aggregate(pipeline)
     degrees = [d for d in cursor]
     return jsonify(degrees)
