@@ -4,7 +4,6 @@ import ast
 from flask import Flask, request, render_template
 from pymongo import MongoClient
 from bson import json_util
-from bson.objectid import ObjectId
 
 from flask_cors import CORS
 
@@ -114,7 +113,7 @@ def degrees():
             {'$match': where}
         )
     pipeline.append(
-        {'$group': {'_id': '$degree.id', 'count': {'$sum': 1}}}
+        {'$group': {'_id': '$degree._id', 'count': {'$sum': 1}}}
     )
     pipeline.append(
         {'$lookup': {

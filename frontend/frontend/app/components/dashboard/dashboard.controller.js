@@ -96,13 +96,13 @@ angular.module('app').controller('DashboardCtrl', [
                 where['topics'] = {'$in': $scope.selected_topics}
             }
             if($scope.selected_degrees.length > 0) {
-                where['degree.id'] = {'$in': $scope.selected_degrees}
+                where['degree._id'] = {'$in': $scope.selected_degrees}
             }
             if($scope.selected_language.hasOwnProperty('_id')) {
                 where['language'] = $scope.selected_language._id
             }
             if($scope.selected_university.hasOwnProperty('_id')) {
-                where['university.id'] = $scope.selected_university._id;
+                where['university._id'] = $scope.selected_university._id;
             }
             return where;
         };
@@ -110,7 +110,7 @@ angular.module('app').controller('DashboardCtrl', [
         $scope.updateDegrees = function(where) {
             Degree.query({
                 // Don't filter degrees based on selected degrees
-                'where': {'topics': where['topics'], 'language': where['language'], 'university.id': where['university.id']}
+                'where': {'topics': where['topics'], 'language': where['language'], 'university._id': where['university._id']}
             }, function(data) {
                 $scope.degrees = data;
                 console.log('Updated degree counts');

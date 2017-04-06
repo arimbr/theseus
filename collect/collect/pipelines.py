@@ -6,6 +6,7 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import re
 import logging
+from datetime import datetime
 
 import pymongo
 from scrapy.conf import settings
@@ -29,7 +30,7 @@ def get_university(collections):
     university_ids = [_id for _id in collections if _id.startswith('com')]
     if len(university_ids) > 0:
         return {
-            'id': university_ids[0]
+            '_id': university_ids[0]
         }
     return None
 
@@ -39,7 +40,7 @@ def get_degree(collections):
     degree_ids = [_id for _id in collections if _id.startswith('col')]
     if len(degree_ids) > 0:
         return {
-            'id': degree_ids[0]
+            '_id': degree_ids[0]
         }
     return None
 
@@ -50,7 +51,7 @@ def get_year(years):
         # Take the first 4 digits as the year
         return int(re.findall(r'\d{4}', years[0])[0])
     except Exception:
-        logger.exception("Couldn't get year from: " + years)
+        logger.exception("Couldn't get year from: {}".format(years))
         return None
 
 
@@ -83,7 +84,12 @@ class MongoDBPipeline(object):
         item['language'] = get_language(item['languages'])
         return item
 
+    def add_time(self, item):
+        item['updatedat'] = datetime.now()
+        return item
+
     def load_collection(self, item):
+        item = self.add_time(item)
         result = self.collections.replace_one(
             {'_id': item['_id']},
             item,
@@ -91,6 +97,7 @@ class MongoDBPipeline(object):
         )
 
     def load_thesis(self, item):
+        item = self.add_time(item)
         try:
             result = self.theses.replace_one(
                 {'_id': item['_id']},
@@ -98,7 +105,7 @@ class MongoDBPipeline(object):
                 upsert=True
             )
         except Exception:
-            logger.exception("Couldn't load item: " + item)
+            logger.exception("Couldn't load item: {}".format(item))
 
     def process_item(self, item, spider):
         if isinstance(item, Thesis):
