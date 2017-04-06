@@ -2,7 +2,7 @@
     <md-toolbar class="toolbar">
         <div class="home-header md-toolbar-tools">
             <h1>
-                <span><a href="/" class="brand">Ammattiko.</a></span>
+                <span><a href="/" class="brand">Ammattiko.</a><sup>beta</sup></span>
             </h1>
             <span flex> </span>
         </div>
@@ -18,12 +18,12 @@
     </div>
     <div class="kpis" layout="column" layout-gt-xs="row" layout-align="center">
         <div layout="row" flex>
-            <md-card class="kpi" flex><span class="number">27</span> UNIVERSITIES</md-card>
-            <md-card class="kpi" flex><span class="number">978</span> DEGREES</md-card>
+            <md-card class="kpi" flex><span class="number" count-up end-val="counts.universities" duration="5" reanimate-on-click="false"></span> UNIVERSITIES</md-card>
+            <md-card class="kpi" flex><span class="number" count-up end-val="counts.degrees" duration="5" reanimate-on-click="false"></span> DEGREES</md-card>
         </div>
         <div layout="row" flex>
-            <md-card class="kpi" flex><span class="number">22,241</span> TOPICS</md-card>
-            <md-card class="kpi" flex><span class="number">127,012</span> THESES</md-card>
+            <md-card class="kpi" flex><span class="number" count-up end-val="counts.topics" duration="5" reanimate-on-click="false"></span> TOPICS</md-card>
+            <md-card class="kpi" flex><span class="number" count-up end-val="counts.thesis" duration="5" reanimate-on-click="false"></span> THESES</md-card>
         </div>
     </div>
     </div>

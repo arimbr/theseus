@@ -7,7 +7,8 @@ angular.module('app').controller('DashboardCtrl', [
     'Degree',
     'University',
     'Thesis',
-    function($scope, $window, $location, config, Topic, Degree, University, Thesis) {
+    'Count',
+    function($scope, $window, $location, config, Topic, Degree, University, Thesis, Count) {
 
         //d3.json('app/components/dashboard/most_popular_degrees.json', function(data) {
         //    $scope.degree_counts = data;
@@ -80,8 +81,12 @@ angular.module('app').controller('DashboardCtrl', [
                 //$scope.$apply();
             });
 
-            Thesis.query({'limit': 10, 'fields': "['titles', 'authors', 'urls']"}, function(data) {
+            Thesis.query({'limit': 9, 'fields': "['titles', 'authors', 'urls']"}, function(data) {
                 $scope.theses = data;
+            });
+
+            Count.get({}, function(data) {
+                $scope.thesis_count = data;
             });
         };
 
@@ -131,12 +136,21 @@ angular.module('app').controller('DashboardCtrl', [
 
         $scope.updateTheses = function(where) {
             Thesis.query({
-                'limit': 10,
+                'limit': 9,
                 'fields': "['titles', 'authors', 'urls']",
                 'where': where
             }, function(data) {
                 $scope.theses = data;
-                console.log('Updated theses counts');
+                console.log('Updated theses');
+            });
+        };
+
+        $scope.updateCounts = function(where) {
+            Count.get({
+                'where': where
+            }, function(data) {
+                $scope.counts = data;
+                console.log('Updated thesis count');
             });
         };
 
@@ -145,6 +159,7 @@ angular.module('app').controller('DashboardCtrl', [
                 var where = $scope.getWhereClause();
                 $scope.updateTopics(where);
                 $scope.updateTheses(where);
+                $scope.updateCounts(where);
             }
         });
 
@@ -154,6 +169,7 @@ angular.module('app').controller('DashboardCtrl', [
                 $scope.updateDegrees(where);
                 $scope.updateTopics(where);
                 $scope.updateTheses(where);
+                $scope.updateCounts(where);
             }
         });
 
@@ -163,6 +179,7 @@ angular.module('app').controller('DashboardCtrl', [
                 $scope.updateDegrees(where);
                 $scope.updateTopics(where);
                 $scope.updateTheses(where);
+                $scope.updateCounts(where);
             }
         });
 
@@ -172,6 +189,7 @@ angular.module('app').controller('DashboardCtrl', [
                 $scope.updateDegrees(where);
                 $scope.updateTopics(where);
                 $scope.updateTheses(where);
+                $scope.updateCounts(where);
             }
         });
 

@@ -80,6 +80,23 @@ def theses():
     return jsonify(theses)
 
 
+@app.route("/counts")
+def counts():
+    where = ast.literal_eval(request.args.get('where', '{}'))
+    universities_count = db.universities.find(where).count()
+    degrees_count = db.degrees.find(where).count()
+    # TODO: get value from database
+    topics_count = 22241
+    thesis_count = db.theses.find(where).count()
+    counts = {
+        'universities': universities_count,
+        'degrees': degrees_count,
+        'topics': topics_count,
+        'thesis': thesis_count,
+    }
+    return jsonify(counts)
+
+
 # /counts?group=subject&limit=100
 # /counts?group=programme&limit=100
 # /counts?group=subjects&limit=100&where={"language":"en"}

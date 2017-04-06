@@ -2,6 +2,7 @@ angular.module('app', [
     'ngMaterial',
     'ngRoute',
     'ngResource',
+    'countUpModule',
 ]);
 
 angular.module('app').constant('config', {
