@@ -73,7 +73,7 @@
             <md-divider></md-divider>
             <div class="container">
                 <md-list flex>
-                    <md-subheader class="md-no-sticky">{{counts.thesis}} theses</md-subheader>
+                    <md-subheader class="md-no-sticky">{{counts.thesis | number}} theses</md-subheader>
                     <md-list-item class="md-2-line" ng-repeat="thesis in theses" ng-click="openThesisURL(thesis)">
                         <div class="md-list-item-text" layout="column" target="_blank">
                             <h3>{{ thesis.titles[0] }}</h3>
