@@ -19,7 +19,9 @@ logger = logging.getLogger(__name__)
 def get_topics(subjects, keywords):
     """Joins subjects and keywords and removes duplicates"""
     topics = set(subjects).union(keywords)
-    return [topic.lower().strip() for topic in topics if topic.strip()]
+    return list(set(
+        [topic.lower().strip() for topic in topics if topic.strip()]
+    ))
 
 
 def get_university(collections):
