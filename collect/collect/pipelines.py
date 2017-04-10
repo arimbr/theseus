@@ -9,7 +9,6 @@ import logging
 from datetime import datetime
 
 import pymongo
-from scrapy.conf import settings
 
 from .items import Thesis, Collection
 
@@ -54,7 +53,6 @@ def get_year(years):
         logger.exception("Couldn't get year from: {}".format(years))
         return None
 
-
 def get_language(languages):
     """Parses the language"""
     if len(languages) > 0 and languages[0]:
@@ -64,14 +62,22 @@ def get_language(languages):
 
 class MongoDBPipeline(object):
 
-    def __init__(self):
-        connection = pymongo.MongoClient(
-            settings['MONGODB_HOST'],
-            settings['MONGODB_PORT']
+    def __init__(self, mongo_host, mongo_port, mongo_db):
+        self.mongo_host = mongo_host
+        self.mongo_port = mongo_port
+        self.mongo_db = mongo_db
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(
+            mongo_host=crawler.settings.get('MONGODB_HOST'),
+            mongo_port=crawler.settings.get('MONGODB_PORT'),
+            mongo_db=crawler.settings.get('MONGODB_DB')
         )
-        db = connection[settings['MONGODB_DB']]
-        self.theses = db[settings['MONGODB_THESES_COLLECTION']]
-        self.collections = db[settings['MONGODB_COLLECTIONS_COLLECTION']]
+
+    def open_spider(self, spider):
+        self.client = pymongo.MongoClient(self.mongo_host, self.mongo_port)
+        self.db = self.client[self.mongo_db]
 
     def transform_collection(self, item):
         return item
@@ -90,7 +96,7 @@ class MongoDBPipeline(object):
 
     def load_collection(self, item):
         item = self.add_time(item)
-        result = self.collections.replace_one(
+        result = self.db.collections.replace_one(
             {'_id': item['_id']},
             item,
             upsert=True
@@ -99,7 +105,7 @@ class MongoDBPipeline(object):
     def load_thesis(self, item):
         item = self.add_time(item)
         try:
-            result = self.theses.replace_one(
+            result = self.db.theses.replace_one(
                 {'_id': item['_id']},
                 item,
                 upsert=True
