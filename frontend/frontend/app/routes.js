@@ -7,10 +7,11 @@ angular.module('app').config([
         $routeProvider.when('/', {
             // TODO: add router inside components.home ?
             templateUrl: 'app/components/home/home.html',
-            controller: 'HomeCtrl'
+            controller: 'HomeCtrl',
         })
         .when('/dashboard', {
             templateUrl: 'app/components/dashboard/dashboard.html',
-            controller: 'DashboardCtrl'
+            controller: 'DashboardCtrl',
+            reloadOnSearch: false,
         });
 }]);

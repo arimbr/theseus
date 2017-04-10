@@ -20,24 +20,24 @@
 <main>
     <md-card class="filter-container">
         <div layout="column" layout-gt-sm="row">
-            <div layout="row" flex>
+            <div layout="row" flex="50">
                 <md-chips flex ng-model="selected.topics" placeholder="Enter a topic" secondary-placeholder="" md-transform-chip="$chip.toLowerCase()"></md-chips>
             </div>
-            <div layout="row" flex>
-                <md-input-container class="university-container" flex>
+            <div layout="row" flex="50">
+                <md-input-container class="university-container" flex="50">
                     <label>University</label>
                     <md-select ng-model="selected.university">
-                        <md-option><em>All</em></md-option>
-                        <md-option ng-repeat="university in universities" ng-value="university">
+                        <md-option>All</md-option>
+                        <md-option ng-repeat="university in universities" ng-value="university" ng-selected="university._id === selected.university._id">
                             {{university.name}}
                         </md-option>
                     </md-select>
                 </md-input-container>
-                <md-input-container class="language-container" flex>
+                <md-input-container class="language-container" flex="50">
                     <label>Language</label>
                     <md-select ng-model="selected.language">
-                        <md-option><em>All</em></md-option>
-                        <md-option ng-repeat="language in languages" ng-value="language">
+                        <md-option>All</md-option>
+                        <md-option ng-repeat="language in languages" ng-value="language" ng-selected="language._id === selected.language._id">
                             {{language.label}}
                         </md-option>
                     </md-select>
