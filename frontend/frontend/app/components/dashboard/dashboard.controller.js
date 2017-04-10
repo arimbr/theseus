@@ -49,45 +49,25 @@ angular.module('app').controller('DashboardCtrl', [
                 {_id: 'en', label: 'English'},
                 {_id: 'sv', label: 'Swedish'}
             ];
-            $scope.universities = [
-                {_id: 'com_10024_6', name: 'Metropolia Ammatikorkeakoulu'},
-                {_id: 'com_10024_12', name: 'Laurea Ammatikorkeakoulu'}
-            ];
-
-            // Graph filters
-            $scope.selected_university = {};
-            $scope.selected_language = {};
-            $scope.selected_degrees = [];
-            $scope.selected_topics = [];
-
-            // Graphs data
-            $scope.degrees = [];
-            $scope.topics = [];
-            $scope.theses = [];
-
-            // TODO: refactor to include initial data load on watch
-            // Initial data
 
             University.query({}, function(data) {
                 $scope.universities = data;
             });
 
-            Degree.query({}, function(data) {
-                $scope.degrees = data;
-            });
+            // Graph filters
+            $scope.selected = {
+                university: {},
+                language: {},
+                degrees: [],
+                topics: [],
+            };
 
-            Topic.query({'group': 'topics', 'limit': 12}, function(data) {
-                $scope.topics = data;
-                //$scope.$apply();
-            });
-
-            Thesis.query({'limit': 9, 'fields': "['titles', 'authors', 'urls']"}, function(data) {
-                $scope.theses = data;
-            });
-
-            Count.get({}, function(data) {
-                $scope.thesis_count = data;
-            });
+            // Graphs data
+            //var where = $scope.getWhereClause();
+            //$scope.updateDegrees(where);
+            //$scope.updateTopics(where);
+            //$scope.updateTheses(where);
+            //$scope.updateCounts(where);
         };
 
         $scope.openThesisURL = function(thesis) {
@@ -97,17 +77,17 @@ angular.module('app').controller('DashboardCtrl', [
 
         $scope.getWhereClause = function() {
             var where = {};
-            if($scope.selected_topics.length > 0) {
-                where['topics'] = {'$in': $scope.selected_topics}
+            if($scope.selected.topics.length > 0) {
+                where['topics'] = {'$in': $scope.selected.topics}
             }
-            if($scope.selected_degrees.length > 0) {
-                where['degree._id'] = {'$in': $scope.selected_degrees}
+            if($scope.selected.degrees.length > 0) {
+                where['degree._id'] = {'$in': $scope.selected.degrees}
             }
-            if($scope.selected_language.hasOwnProperty('_id')) {
-                where['language'] = $scope.selected_language._id
+            if($scope.selected.language.hasOwnProperty('_id')) {
+                where['language'] = $scope.selected.language._id
             }
-            if($scope.selected_university.hasOwnProperty('_id')) {
-                where['university._id'] = $scope.selected_university._id;
+            if($scope.selected.university.hasOwnProperty('_id')) {
+                where['university._id'] = $scope.selected.university._id;
             }
             return where;
         };
@@ -154,44 +134,52 @@ angular.module('app').controller('DashboardCtrl', [
             });
         };
 
-        $scope.$watchCollection('selected_degrees', function(newVal, oldVal) {
-            if (newVal != oldVal) {
-                var where = $scope.getWhereClause();
-                $scope.updateTopics(where);
-                $scope.updateTheses(where);
-                $scope.updateCounts(where);
-            }
-        });
+        $scope.$watch('selected', function(newVal, oldVal) {
+            var where = $scope.getWhereClause();
+            $scope.updateDegrees(where);
+            $scope.updateTopics(where);
+            $scope.updateTheses(where);
+            $scope.updateCounts(where);
+        }, true);
 
-        $scope.$watchCollection('selected_topics', function(newVal, oldVal) {
-            if (newVal != oldVal) {
-                var where = $scope.getWhereClause();
-                $scope.updateDegrees(where);
-                $scope.updateTopics(where);
-                $scope.updateTheses(where);
-                $scope.updateCounts(where);
-            }
-        });
-
-        $scope.$watchCollection('selected_language', function(newVal, oldVal) {
-            if (newVal != oldVal) {
-                var where = $scope.getWhereClause();
-                $scope.updateDegrees(where);
-                $scope.updateTopics(where);
-                $scope.updateTheses(where);
-                $scope.updateCounts(where);
-            }
-        });
-
-        $scope.$watchCollection('selected_university', function(newVal, oldVal) {
-            if (newVal != oldVal) {
-                var where = $scope.getWhereClause();
-                $scope.updateDegrees(where);
-                $scope.updateTopics(where);
-                $scope.updateTheses(where);
-                $scope.updateCounts(where);
-            }
-        });
+        //$scope.$watchCollection('selected_degrees', function(newVal, oldVal) {
+        //    if (newVal != oldVal) {
+        //        var where = $scope.getWhereClause();
+        //        $scope.updateTopics(where);
+        //        $scope.updateTheses(where);
+        //        $scope.updateCounts(where);
+        //    }
+        //});
+        //
+        //$scope.$watchCollection('selected_topics', function(newVal, oldVal) {
+        //    if (newVal != oldVal) {
+        //        var where = $scope.getWhereClause();
+        //        $scope.updateDegrees(where);
+        //        $scope.updateTopics(where);
+        //        $scope.updateTheses(where);
+        //        $scope.updateCounts(where);
+        //    }
+        //});
+        //
+        //$scope.$watchCollection('selected_language', function(newVal, oldVal) {
+        //    if (newVal != oldVal) {
+        //        var where = $scope.getWhereClause();
+        //        $scope.updateDegrees(where);
+        //        $scope.updateTopics(where);
+        //        $scope.updateTheses(where);
+        //        $scope.updateCounts(where);
+        //    }
+        //});
+        //
+        //$scope.$watchCollection('selected_university', function(newVal, oldVal) {
+        //    if (newVal != oldVal) {
+        //        var where = $scope.getWhereClause();
+        //        $scope.updateDegrees(where);
+        //        $scope.updateTopics(where);
+        //        $scope.updateTheses(where);
+        //        $scope.updateCounts(where);
+        //    }
+        //});
 
         // Start dashboard
         $scope.init();

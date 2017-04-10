@@ -2,8 +2,8 @@ angular.module('app').directive('barChart', function() {
     return {
         restrict: 'E',
         scope: {
-            data: '=data',
-            selected: '=selected'
+            data: '=',
+            selected: '='
         },
         link: function(scope, element, attributes) {
 
@@ -16,15 +16,16 @@ angular.module('app').directive('barChart', function() {
             }
 
             function handleClick(d) {
-                console.log("Selected bar: ", d);
-                var index = scope.selected.indexOf(d._id)
+                var index = scope.selected.indexOf(d._id);
                 if( index > -1) {
                     // Remove element
+                    console.log("Deselected bar: ", d);
                     scope.$apply(function() {
                         scope.selected.splice(index, 1);
                     });
                 } else {
                     // Add new element
+                    console.log("Selected bar: ", d);
                     scope.$apply(function() {
                         scope.selected.push(d._id);
                     });
@@ -97,13 +98,12 @@ angular.module('app').directive('barChart', function() {
             };
 
 
-            scope.$watchCollection('data', function(newVal, oldVal) {
-                //debugger;
-                if (newVal != oldVal) {
+            scope.$watch('data', function(newVal, oldVal) {
+                if(newVal != oldVal) {
                     console.log("Watch fired in bar chart");
                     scope.render(newVal);
                 }
-            });
+            }, true);
 
         }
     }

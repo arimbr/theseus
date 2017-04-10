@@ -21,12 +21,12 @@
     <md-card class="filter-container">
         <div layout="column" layout-gt-sm="row">
             <div layout="row" flex>
-                <md-chips flex ng-model="selected_topics" placeholder="Enter a topic" secondary-placeholder="" md-transform-chip="$chip.toLowerCase()"></md-chips>
+                <md-chips flex ng-model="selected.topics" placeholder="Enter a topic" secondary-placeholder="" md-transform-chip="$chip.toLowerCase()"></md-chips>
             </div>
             <div layout="row" flex>
                 <md-input-container class="university-container" flex>
                     <label>University</label>
-                    <md-select ng-model="selected_university">
+                    <md-select ng-model="selected.university">
                         <md-option><em>All</em></md-option>
                         <md-option ng-repeat="university in universities" ng-value="university">
                             {{university.name}}
@@ -35,7 +35,7 @@
                 </md-input-container>
                 <md-input-container class="language-container" flex>
                     <label>Language</label>
-                    <md-select ng-model="selected_language">
+                    <md-select ng-model="selected.language">
                         <md-option><em>All</em></md-option>
                         <md-option ng-repeat="language in languages" ng-value="language">
                             {{language.label}}
@@ -52,7 +52,7 @@
             </div>
             <md-divider></md-divider>
             <div class="container">
-                <bubble-chart data="degrees" selected="selected_degrees"></bubble-chart>
+                <bubble-chart data="degrees" selected="selected.degrees"></bubble-chart>
                 <span class="chart-help"><i>Hover, click, zoom and pan</i></span>
             </div>
         </md-card>
@@ -62,7 +62,7 @@
             </div>
             <md-divider></md-divider>
             <div class="container">
-                <bar-chart data="topics" selected="selected_topics"></bar-chart>
+                <bar-chart data="topics" selected="selected.topics"></bar-chart>
                 <!--<span class="chart-help"><i>Click</i></span>-->
             </div>
         </md-card>
@@ -90,13 +90,13 @@
                 <md-tab label="degrees">
                     <md-content class="md-padding">
                         <!--<md-subheader class="md-no-sticky">997 degrees</md-subheader>-->
-                        <bubble-chart data="degrees" selected="selected_degrees"></bubble-chart>
+                        <bubble-chart data="degrees" selected="selected.degrees"></bubble-chart>
                     </md-content>
                 </md-tab>
                 <md-tab label="topics">
                     <md-content class="md-padding">
                         <!--<md-subheader class="md-no-sticky">20,000 topics</md-subheader>-->
-                        <bar-chart data="topics" selected="selected_topics"></bar-chart>
+                        <bar-chart data="topics" selected="selected.topics"></bar-chart>
                     </md-content>
                 </md-tab>
                 <md-tab label="theses">

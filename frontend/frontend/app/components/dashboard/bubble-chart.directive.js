@@ -2,8 +2,8 @@ angular.module('app').directive('bubbleChart', function() {
     return {
         restrict: 'E',
         scope: {
-            data: '=data',
-            selected: '=selected'
+            data: '=',
+            selected: '='
         },
         link: function(scope, element, attributes) {
 
@@ -40,10 +40,10 @@ angular.module('app').directive('bubbleChart', function() {
             }
 
             function handleClick(d) {
-                console.log("Selected circle", d);
                 var index = scope.selected.indexOf(d._id)
                 if( index > -1) {
                     // Remove element
+                    console.log("Deselected circle", d);
                     d3.select(this)
                         .classed("selected-circle", false);
                     scope.$apply(function() {
@@ -51,6 +51,7 @@ angular.module('app').directive('bubbleChart', function() {
                     });
                 } else {
                     // Add new element
+                    console.log("Selected circle", d);
                     d3.select(this).transition()
                         .attr("class", "selected-circle");
                     scope.$apply(function() {
@@ -143,12 +144,12 @@ angular.module('app').directive('bubbleChart', function() {
 
             };
 
-            scope.$watchCollection('data', function(newVal, oldVal) {
-                console.log("Watch fired in bubble chart");
-                if (newVal != oldVal) {
+            scope.$watch('data', function(newVal, oldVal) {
+                if(newVal != oldVal) {
+                    console.log("Watch fired in bubble chart");
                     scope.render(newVal);
                 }
-            });
+            }, true);
         }
     }
 });
