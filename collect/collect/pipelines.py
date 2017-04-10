@@ -53,6 +53,15 @@ def get_year(years):
         logger.exception("Couldn't get year from: {}".format(years))
         return None
 
+
+def get_date(dates):
+    try:
+        return datetime.strptime(dates[0], '%Y-%m-%dT%H:%M:%SZ')
+    except Exception:
+        logger.exception("Couldn't get date from: {}".format(dates))
+        return None
+
+
 def get_language(languages):
     """Parses the language"""
     if len(languages) > 0 and languages[0]:

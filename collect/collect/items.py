@@ -32,6 +32,7 @@ class Thesis(scrapy.Item):
     degree = scrapy.Field()
     language = scrapy.Field()
     year = scrapy.Field()
+    date = scrapy.Field()
     # Added time
     updatedat = scrapy.Field()
 
