@@ -1,7 +1,7 @@
 import json
 import ast
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from pymongo import MongoClient
 from bson import json_util
 
@@ -60,14 +60,6 @@ def build_pipeline(where=None, group=None, limit=None, unwind=False, fields=None
         pipeline.append({'$project': project})
 
     return pipeline
-
-def jsonify(data):
-    """ Transforms a dictionary from a Mongo request in BSON
-    into a JSON string ready to be sent as a Response
-
-        data: dictionary
-    """
-    return json_util.dumps(data, indent=4, separators=(',', ': '))
 
 @app.route("/theses")
 def theses():
