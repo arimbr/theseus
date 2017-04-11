@@ -20,11 +20,11 @@
 <main>
     <md-card class="filter-container">
         <div layout="column" layout-gt-sm="row">
-            <div layout="row" flex="50">
+            <div layout="row" flex-gt-sm="50">
                 <md-chips flex ng-model="selected.topics" placeholder="Enter a topic" secondary-placeholder="" md-transform-chip="$chip.toLowerCase()"></md-chips>
             </div>
-            <div layout="row" flex="50">
-                <md-input-container class="university-container" flex>
+            <div layout="row" flex-gt-sm="50">
+                <md-input-container class="university-container" flex="50">
                     <label>University</label>
                     <md-select ng-model="selected.university">
                         <md-option>All</md-option>
@@ -33,7 +33,7 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
-                <md-input-container class="language-container" flex>
+                <md-input-container class="language-container" flex="50">
                     <label>Language</label>
                     <md-select ng-model="selected.language">
                         <md-option>All</md-option>
