@@ -112,35 +112,41 @@ def universities():
     universities = [t for t in cursor]
     return jsonify(universities)
 
-
 @app.route("/degrees")
-def degrees():
-    where = ast.literal_eval(request.args.get('where', '{}'))
-    pipeline = []
-    if where:
+@app.route("/degrees/<degree_id>")
+def degrees(degree_id=None):
+    if degree_id:
+        # Return degree
+        degree = db.degrees.find_one({"_id": degree_id})
+        return jsonify(degree)
+    else:
+        # Return degree counts
+        where = ast.literal_eval(request.args.get('where', '{}'))
+        pipeline = []
+        if where:
+            pipeline.append(
+                {'$match': where}
+            )
         pipeline.append(
-            {'$match': where}
+            {'$group': {'_id': '$degree._id', 'count': {'$sum': 1}}}
         )
-    pipeline.append(
-        {'$group': {'_id': '$degree._id', 'count': {'$sum': 1}}}
-    )
-    pipeline.append(
-        {'$lookup': {
-            'from': 'degrees',
-            'localField': '_id',
-            'foreignField': '_id',
-            'as': 'degrees'
-        }}
-    )
-    pipeline.append(
-        {'$match': {'degrees': {'$ne': []}}}
-    )
-    pipeline.append(
-        {'$sort': {'count': -1}}
-    )
-    cursor = db.theses.aggregate(pipeline)
-    degrees = [d for d in cursor]
-    return jsonify(degrees)
+        pipeline.append(
+            {'$lookup': {
+                'from': 'degrees',
+                'localField': '_id',
+                'foreignField': '_id',
+                'as': 'degrees'
+            }}
+        )
+        pipeline.append(
+            {'$match': {'degrees': {'$ne': []}}}
+        )
+        pipeline.append(
+            {'$sort': {'count': -1}}
+        )
+        cursor = db.theses.aggregate(pipeline)
+        degrees = [d for d in cursor]
+        return jsonify(degrees)
 
 
 if __name__ == "__main__":
