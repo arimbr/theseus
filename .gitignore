@@ -71,3 +71,9 @@ bower_components
 
 # Data files
 data/
+
+# Static files
+*.csv
+*.png
+*.pdf
+*.jpeg
