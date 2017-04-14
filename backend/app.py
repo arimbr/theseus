@@ -1,16 +1,14 @@
-import json
 import ast
 
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, jsonify
 from pymongo import MongoClient
-from bson import json_util
 
 from flask_cors import CORS
 
 import settings
 
 # static_url_path sets the default url for static files to be in a static folder
-# TOOD: refactor access to db
+# TODO: refactor access to db
 app = Flask(__name__, static_url_path='')
 CORS(app)
 
@@ -22,7 +20,7 @@ connection = MongoClient(
 db = connection[settings.MONGODB_DB]
 
 
-def build_pipeline(where=None, group=None, limit=None, unwind=False, fields=None):
+def build_pipeline(where=None, group=None, limit=None, unwind=False, fields=None, sortby=None):
     """ Gets a pipeline to filter and aggregate documents
 
     Arguments:
@@ -50,6 +48,12 @@ def build_pipeline(where=None, group=None, limit=None, unwind=False, fields=None
             pipeline.append({'$unwind': group})
         pipeline.extend([{'$group': {'_id': group, 'count': {'$sum': 1}}},
                         {'$sort': {'count': -1}}])
+
+    if sortby:
+        pipeline.append(
+            {'$sort': {sortby: -1}}
+        )
+
     # Limiting options
     if limit:
         limit = int(limit)
@@ -66,7 +70,7 @@ def theses():
     where = ast.literal_eval(request.args.get('where', '{}'))
     limit = request.args.get('limit')
     fields = ast.literal_eval(request.args.get('fields', '[]'))
-    pipeline = build_pipeline(where=where, limit=limit, fields=fields)
+    pipeline = build_pipeline(where=where, limit=limit, fields=fields, sortby="year")
     cursor = db.theses.aggregate(pipeline=pipeline)
     theses = [t for t in cursor]
     return jsonify(theses)
@@ -89,11 +93,6 @@ def counts():
     return jsonify(counts)
 
 
-# /counts?group=subject&limit=100
-# /counts?group=programme&limit=100
-# /counts?group=subjects&limit=100&where={"language":"en"}
-# /counts?group=subjects&limit=100&where={"collections":"com_10024_14"}
-# /counts?group=collections&limit=100&where={"keywords":"Python"}
 @app.route("/topics")
 def topics():
     group = request.args.get('group')
@@ -111,6 +110,7 @@ def universities():
     cursor = db.universities.find()
     universities = [t for t in cursor]
     return jsonify(universities)
+
 
 @app.route("/degrees")
 @app.route("/degrees/<degree_id>")
@@ -148,6 +148,14 @@ def degrees(degree_id=None):
         degrees = [d for d in cursor]
         return jsonify(degrees)
 
+
+@app.route("/search_topics")
+def search_topics():
+    search = request.args.get('search')
+    limit = int(request.args.get('limit'))
+    regex = "^{}.*".format(search)
+    topics = db.topics.find({'_id': {'$regex': regex}}).sort("count", -1).limit(limit)
+    return jsonify([topic for topic in topics])
 
 if __name__ == "__main__":
     # Running threaded in local because of
