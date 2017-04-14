@@ -16,6 +16,7 @@ def create_indexes():
     db.theses.create_index([('degree._id', 1)])
     db.theses.create_index([('language', 1)])
     db.theses.create_index([('year', 1)])
+    db.topics.create_index(['count', 1])
 
 if __name__ == '__main__':
     create_indexes()
