@@ -117,8 +117,22 @@ circle {
     stroke: rgb(24, 68, 126) !important;
 }
 
+.degrees-help {
+    min-height: 100px;
+}
+
+.clear-button {
+    color: rgb(181, 28, 49);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .container {
     padding: 10px;
+}
+
+.chart {
+    min-height: 720px;
 }
 
 .filter-container {
@@ -126,8 +140,10 @@ circle {
 }
 
 .chart-help {
-    font-size: 10px;
-    float: right;
+    font-size: 14px;
+    right: 0px;
+    position: absolute;
+    bottom: 0px;
 }
 
 .md-chips {

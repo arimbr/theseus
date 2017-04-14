@@ -3,7 +3,8 @@ angular.module('app').directive('bubbleChart', function() {
         restrict: 'E',
         scope: {
             data: '=',
-            selected: '='
+            selected: '=',
+            hovered: '=',
         },
         link: function(scope, element, attributes) {
 
@@ -12,38 +13,50 @@ angular.module('app').directive('bubbleChart', function() {
                 .offset([-10, 0])
                 .html(getTipHTML);
 
+            //var color = d3.scaleOrdinal(d3.schemeCategory10);
+
             function getTipHTML(d) {
                 var clss = scope.selected.indexOf(d._id) > -1 ? 'selected-tooltip' : 'bubble-tooltip';
                 var html = "<div class='" + clss + "'>"
-                    + "<span><h3>" + d.degrees[0].name + "</h3></span>"
+                    + "<span><h4>" + d.degrees[0].name + "</h4></span>"
                     + "<span>" + d.degrees[0].university.name
-                    + "</span><br><br>"
+                    + "</span><br>"
                     + "<span>" + d.count + " theses" +"</span><br>"
                     + "</div>" ;
                 return html;
             }
 
             function checkSelected(d) {
-                return scope.selected.indexOf(d._id) > -1 ? true : false;
+                return scope.selected.some(function(x) {return x == d._id});
+            }
+
+            function refreshSelected() {
+                d3.selectAll("circle").classed("selected-circle", checkSelected);
             }
 
             function handleMouseover(d) {
+                scope.$apply(function() {
+                    scope.hovered = d;
+                });
                 d3.select(this)
                     .style("stroke", "rgb(24, 68, 126)");
-                tip.show(d);
+                //tip.show(d);
             }
 
             function handleMouseout(d) {
+                scope.$apply(function() {
+                    scope.hovered = {};
+                });
                 d3.select(this)
                     .style("stroke", "rgb(237, 167, 0)");
-                tip.hide(d);
+                //tip.hide(d);
             }
 
             function handleClick(d) {
-                var index = scope.selected.indexOf(d._id)
+                var index = scope.selected.indexOf(d._id);
                 if( index > -1) {
                     // Remove element
-                    console.log("Deselected circle", d);
+                    console.log("Deselected circle", d._id);
                     d3.select(this)
                         .classed("selected-circle", false);
                     scope.$apply(function() {
@@ -51,14 +64,13 @@ angular.module('app').directive('bubbleChart', function() {
                     });
                 } else {
                     // Add new element
-                    console.log("Selected circle", d);
+                    console.log("Selected circle", d._id);
                     d3.select(this).transition()
                         .attr("class", "selected-circle");
                     scope.$apply(function() {
                         scope.selected.push(d._id);
                     });
                 }
-
             }
 
             scope.render = function(data) {
@@ -68,7 +80,7 @@ angular.module('app').directive('bubbleChart', function() {
                 d3.selectAll('.bubble-chart-container').remove();  // Clean before drawing
 
                 var margin = {top: 20, right: 20, bottom: 20, left: 20},
-                    height = 700;
+                    height = 600;
 
                 var rMin = d3.min(data, function(d) {return d['count']});
                 var rMax = d3.max(data, function(d) {return d['count']});
@@ -76,7 +88,7 @@ angular.module('app').directive('bubbleChart', function() {
                 // Rendering circles with same size while zooming
                 // https://bl.ocks.org/mbostock/2a39a768b1d4bc00a09650edef75ad39
                 var zoom = d3.zoom()
-                    .scaleExtent([1, 50])
+                    .scaleExtent([1, 1000])
                     .on('zoom', handleZoom);
 
                 var rScale = d3.scaleSqrt()
@@ -124,6 +136,9 @@ angular.module('app').directive('bubbleChart', function() {
                     .attr("r", function(d) {
                         return rScale(d['count']);
                     })
+                    //.attr("fill", function(d) {
+                    //    return color(d.degrees[0]['cluster']);
+                    //})
                     .attr("transform", function(d) {
                         return "translate(" + x(d.degrees[0].x) + "," + y(d.degrees[0].y) + ")";
                     })
@@ -150,6 +165,11 @@ angular.module('app').directive('bubbleChart', function() {
                     scope.render(newVal);
                 }
             }, true);
+
+            scope.$watchCollection('selected', function(newVal, oldVal) {
+                // Refresh selected circles when clearing selection without data change
+                refreshSelected();
+            });
         }
     }
 });

@@ -8,7 +8,8 @@ angular.module('app').controller('DashboardCtrl', [
     'University',
     'Thesis',
     'Count',
-    function($scope, $window, $location, config, Topic, Degree, University, Thesis, Count) {
+    'SearchTopic',
+    function($scope, $window, $location, config, Topic, Degree, University, Thesis, Count, SearchTopic) {
 
         //d3.json('app/components/dashboard/most_popular_degrees.json', function(data) {
         //    $scope.degree_counts = data;
@@ -42,6 +43,7 @@ angular.module('app').controller('DashboardCtrl', [
         $scope.init = function() {
             console.log("Initiating dashboard");
 
+            $scope.degree = {};  // hovevered degree
             $scope.currentPage = 'page1';
             $scope.updateLanguages({});
             $scope.updateUniversities({});
@@ -57,21 +59,55 @@ angular.module('app').controller('DashboardCtrl', [
             $scope.selected = $scope.searchToFilter({});
         };
 
+        $scope.transformChip = function(chip) {
+            // If it is an object, it's already a known chip
+            if (angular.isObject(chip)) {
+                return chip._id;
+            }
+
+            // Otherwise, create a new one
+            return chip;
+        };
+
+        $scope.querySearch = function(query) {
+            return SearchTopic.query({
+                    "search": query,
+                    "limit": 5
+                }).$promise;
+        };
+
+        $scope.clearDegrees = function() {
+            console.log("Clearing degrees selection");
+            $scope.selected.degrees = [];
+        };
+
         $scope.openThesisURL = function(thesis) {
             console.log("Clicked on thesis", thesis);
             $window.open(thesis.urls[0]);
         };
 
+        $scope.showDegreeHelp = function(degree, selected) {
+            return (angular.equals({}, degree) && selected.degrees.length == 0);
+        };
+
+        $scope.showDegreeLegend = function(degree, selected) {
+            return (!angular.equals({}, degree) || selected.degrees.length == 1);
+        };
+
+        $scope.showDegreeSelection = function(degree, selected) {
+            return (angular.equals({}, degree) && selected.degrees.length >= 1);
+        };
+
         $scope.getWhereClause = function() {
             var where = {};
             if($scope.selected.topics.length > 0) {
-                where['topics'] = {'$in': $scope.selected.topics}
+                where['topics'] = {'$in': $scope.selected.topics};
             }
             if($scope.selected.degrees.length > 0) {
-                where['degree._id'] = {'$in': $scope.selected.degrees}
+                where['degree._id'] = {'$in': $scope.selected.degrees};
             }
             if($scope.selected.language.hasOwnProperty('_id')) {
-                where['language'] = $scope.selected.language._id
+                where['language'] = $scope.selected.language._id;
             }
             if($scope.selected.university.hasOwnProperty('_id')) {
                 where['university._id'] = $scope.selected.university._id;
@@ -108,7 +144,7 @@ angular.module('app').controller('DashboardCtrl', [
         $scope.updateTopics = function(where) {
             Topic.query({
                 'group': 'topics',
-                'limit': 12,
+                'limit': 11,
                 'where': where
             }, function(data) {
                 $scope.topics = data;
@@ -120,7 +156,7 @@ angular.module('app').controller('DashboardCtrl', [
         $scope.updateTheses = function(where) {
             Thesis.query({
                 'limit': 9,
-                'fields': "['titles', 'authors', 'urls']",
+                'fields': "['titles', 'authors', 'urls', 'year']",
                 'where': where
             }, function(data) {
                 $scope.theses = data;
@@ -147,10 +183,10 @@ angular.module('app').controller('DashboardCtrl', [
                 qs.language = filter.language._id;
             }
             if(filter.hasOwnProperty('degrees') && filter.degrees.length > 0) {
-                qs.degree = filter.degrees.map(function(d) {return d});
+                qs.degree = filter.degrees;
             }
             if(filter.hasOwnProperty('topics') && filter.topics.length > 0) {
-                qs.topic = filter.topics.map(function(d) {return d});
+                qs.topic = filter.topics;
             }
             return qs;
         };
