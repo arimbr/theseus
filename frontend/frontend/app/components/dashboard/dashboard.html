@@ -125,16 +125,16 @@
                             <span ng-show="showDegreeHelp(degree, selected)">
                                 <span>Hover, select, zoom and pan on the degrees.</span>
                             </span>
-                            <span ng-show="showDegreeLegend(degree, selected)">
-                                <!--<h3>{{selected.degrees[0].degrees[0].name}}</h3>-->
-                                <!--<span>{{selected.degrees[0].degrees[0].university.name}}</span>-->
-                                <degree-legend hovered="degree"></degree-legend>
-                            </span>
                             <span ng-show="showDegreeSelection(degree, selected)">
                                 <h3>
                                     <span>Selected {{selected.degrees.length}} degrees</span>
                                 </h3>
                                 <a class="clear-button" ng-click="clearDegrees()">Clear selection</a>
+                            </span>
+                            <span ng-show="showDegreeLegend(degree, selected)">
+                                <!--<h3>{{selected.degrees[0].degrees[0].name}}</h3>-->
+                                <!--<span>{{selected.degrees[0].degrees[0].university.name}}</span>-->
+                                <degree-legend hovered="degree"></degree-legend>
                             </span>
                         </md-subheader>
                         <bubble-chart data="degrees" selected="selected.degrees" hovered="degree"></bubble-chart>
@@ -142,13 +142,13 @@
                 </md-tab>
                 <md-tab label="topics">
                     <md-content class="md-padding">
-                        <md-subheader class="md-no-sticky">Select between most popular topics.</md-subheader>
+                        <md-subheader>Select between most popular topics.</md-subheader>
                         <bar-chart data="topics" selected="selected.topics"></bar-chart>
                     </md-content>
                 </md-tab>
                 <md-tab label="theses">
                     <md-content class="md-padding">
-                        <md-subheader class="md-no-sticky">Consult {{counts.thesis | number}} theses.</md-subheader>
+                        <md-subheader>Consult {{counts.thesis | number}} theses.</md-subheader>
                         <md-list flex>
                             <md-list-item class="md-2-line" ng-repeat="thesis in theses" ng-click="openThesisURL(thesis)">
                                 <div class="md-list-item-text" layout="column" target="_blank">
