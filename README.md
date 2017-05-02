@@ -6,7 +6,7 @@ Bachelor Thesis
 
 Ari Bajo Rouvinen
 
-=========
+
 
 Data Mining Thesis Topics in Finland
 --------------
