@@ -1,6 +1,9 @@
 Helsinki Metropolia University of Applied Sciences
+
 Information Technology
+
 Bachelor Thesis
+
 Ari Bajo Rouvinen
 =========
 
