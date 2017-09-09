@@ -28,7 +28,8 @@
                             md-search-text="searchText"
                             md-items="item in querySearch(searchText)"
                             md-item-text="item._id"
-                            placeholder="Search a topic">
+                            placeholder="Search a topic"
+                            md-delay="500">
                         <span md-highlight-text="searchText">{{item._id}}</span>
                     </md-autocomplete>
                     <md-chip-template>
@@ -166,7 +167,7 @@
 <footer>
     <md-toolbar class="toolbar">
         <div class="md-toolbar-tools">
-            <span class="footer-item"><a href="mailto:ari.bajorouvinen@metropolia.fi">CONTACT</a></span>
+            <span class="footer-item"><a href="mailto:arimbr@gmail.com">CONTACT</a></span>
         </div>
     </md-toolbar>
 </footer>
